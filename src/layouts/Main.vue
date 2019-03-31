@@ -24,7 +24,9 @@
       <div id="main-layout--left">
         <div class="main-layout-content">
           <div class="list-title">
-            {{i18n.t('artists')}}
+            <slot name="artist-title">
+              {{i18n.t('artists')}}
+            </slot>
           </div>
           <div class="list-content">
             <slot name="artist-list"></slot>
@@ -35,17 +37,21 @@
         <div id="main-layout--center--top">
           <div class="main-layout-content">
             <div class="list-title">
-              {{i18n.t('albums')}}
+              <slot name="albums-title">
+                {{i18n.t('albums')}}
+              </slot>
             </div>
             <div class="list-content">
-              <slot name="album-list"></slot>
+              <slot name="albums-list"></slot>
             </div>
           </div>
         </div>
         <div id="main-layout--center--bottom">
           <div class="main-layout-content">
             <div class="list-title">
-              {{i18n.t('tracks')}}
+              <slot name="tracks-title">
+                {{i18n.t('tracks')}}
+              </slot>
             </div>
             <div class="list-content">
               <slot name="track-list"></slot>
@@ -131,9 +137,9 @@
 }
 
 .list-title {
-  flex:1;
 }
 .list-content {
   overflow-y:auto;
+  flex:1;
 }
 </style>

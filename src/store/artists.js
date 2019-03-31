@@ -1,7 +1,7 @@
 export default {
   state: {
     artists: [],
-    currentArtist: {}
+    currentArtist: null
   },
   actions: {
     loadArtistList ({ commit }) {
@@ -24,6 +24,12 @@ export default {
   mutations: {
     setArtistList (state, list) {
       state.artists = list
+    },
+    setCurrentArtist (state, artistId) {
+      state.currentArtist = state.artists.find(item => item.id === artistId)
+    },
+    clearCurrentArtist (state) {
+      state.currentArtist = null
     }
   }
 }

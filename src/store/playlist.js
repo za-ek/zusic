@@ -10,6 +10,9 @@ export default {
         playlist.push({
           id: i,
           title: Math.random().toString(36).substring(7),
+          artist: {
+            title: Math.random().toString(36).substring(7)
+          },
           album: {
             title: Math.random().toString(36).substring(7)
           },
@@ -22,6 +25,12 @@ export default {
   mutations: {
     setPlaylist (state, playlist) {
       state.playlist = playlist
+    },
+    addTrackToPlaylist (state, track) {
+      state.playlist.push(track)
+    },
+    removeTrackFromPlaylist (state, n) {
+      state.playlist.splice(n, 1)
     }
   }
 }

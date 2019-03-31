@@ -9,9 +9,10 @@
       </div>
       <div slot="artist-list">
         <div
-          v-for="(artist, key) in artists"
+          v-for="(artist) in artists"
           :key="artist.id"
           class="list-item"
+          @click="setCurrentArtist(artist.id)"
         >
           <div class="list-item--title">{{artist.title}}</div>
           <div class="list-item--info">{{artist.genre.title}}</div>
@@ -21,11 +22,18 @@
           </div>
         </div>
       </div>
-      <div slot="album-list">
+      <div slot="albums-title">
+        {{i18n.t('albums')}}
+        <span v-if="currentArtist" @click="clearCurrentArtist">
+          - {{currentArtist.title}}
+        </span>
+      </div>
+      <div slot="albums-list">
         <div
-                v-for="(album, key) in albums"
+                v-for="(album) in albums"
                 :key="album.id"
                 class="list-item"
+                @click="setCurrentAlbum(album.id)"
         >
           <div class="list-item--title">{{album.title}}</div>
           <div class="list-item--info">
@@ -39,14 +47,27 @@
           </div>
         </div>
       </div>
+      <div slot="tracks-title">
+        {{i18n.t('tracks')}}
+        <span v-if="currentArtist" @click="clearCurrentArtist">
+          - {{currentArtist.title}}
+        </span>
+        <span v-else-if="currentAlbum">
+          - {{currentAlbum.artist.title}}
+        </span>
+        <span v-if="currentAlbum" @click="clearCurrentAlbum">
+          - {{currentAlbum.title}}
+        </span>
+      </div>
       <div slot="track-list">
         <div
-                v-for="(track, key) in tracks"
+                v-for="(track) in tracks"
                 :key="track.id"
                 class="list-item"
+                @click="addTrackToPlaylist(track)"
         >
           <div class="list-item--title">{{track.title}}</div>
-          <div class="list-item--info">{{track.album.title}}</div>
+          <div class="list-item--info">{{track.artist.title}} - {{track.album.title}}</div>
           <div class="list-item--sub-info">{{track.duration}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
@@ -64,7 +85,9 @@
           <div class="list-item--info">{{item.album.title}}</div>
           <div class="list-item--sub-info">{{item.duration}}</div>
           <div class="list-item--controls">
-            <v-icon name="x"></v-icon>
+            <v-icon
+                    @click.native="removeTrackFromPlaylist(key)"
+                    name="x"></v-icon>
           </div>
         </div>
       </div>
@@ -88,7 +111,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import Layout from './layouts/Main'
 import LanguagePicker from './components/LanguagePicker'
 
@@ -100,6 +123,8 @@ export default {
   },
   computed: {
     ...mapState({
+      currentArtist: state => state.Artists.currentArtist,
+      currentAlbum: state => state.Albums.currentAlbum,
       playlist: state => state.Playlist.playlist,
       artists: state => state.Artists.artists,
       albums: state => state.Albums.albums,
@@ -118,7 +143,32 @@ export default {
       'loadArtistList',
       'loadAlbumList',
       'loadTrackList'
+    ]),
+    ...mapMutations([
+      'addTrackToPlaylist',
+      'setCurrentArtist',
+      'clearCurrentArtist',
+      'setCurrentAlbum',
+      'clearCurrentAlbum',
+      'removeTrackFromPlaylist'
     ])
+  },
+  watch: {
+    currentArtist (v) {
+      this.loadAlbumList(v && v.id)
+      this.clearCurrentAlbum()
+      if (v && v.id) {
+        this.loadTrackList({
+          artistId: v.id
+        })
+      }
+    },
+    currentAlbum (v) {
+      this.loadTrackList({
+        artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
+        albumId: v && v.id
+      })
+    }
   },
   components: {
     Layout,
