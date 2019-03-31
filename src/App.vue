@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <Layout>
+      <div slot="menu-line">
+        <div style="font-size:30px;font-weight: bold;margin:12px 0 12px 15px;float:left;">Zusic</div>
+        <div style="float:right;margin-top:0;padding-top:20px;padding-right:20px;">
+          <LanguagePicker></LanguagePicker>
+        </div>
+      </div>
       <div slot="artist-list">
         <div
           v-for="i in artists"
@@ -75,6 +81,7 @@
 
 <script>
 import Layout from './layouts/Main'
+import LanguagePicker from './components/LanguagePicker'
 
 export default {
   name: 'app',
@@ -95,7 +102,8 @@ export default {
     }
   },
   components: {
-    Layout
+    Layout,
+    LanguagePicker
   }
 }
 </script>

@@ -1,6 +1,6 @@
 export default {
   artists: 'Исполнители',
-  albums: 'Альюомы',
+  albums: 'Альбомы',
   tracks: 'Треки',
   playlist: 'Плейлист',
 }

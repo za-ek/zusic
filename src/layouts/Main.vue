@@ -18,9 +18,7 @@
 <template>
   <div id="main-layout">
     <div id="main-layout--top">
-      <slot name="menu-line">
-        <div style="font-size:30px;font-weight: bold;margin:12px 0 12px 15px;">Zusic</div>
-      </slot>
+      <slot name="menu-line"></slot>
     </div>
     <div id="main-layout--middle">
       <div id="main-layout--left">
