@@ -1,5 +1,6 @@
 <!--
   _____________
+ |_____________|
  |   |     |   |
  |   |_____|   |
  |   |     |   |
@@ -8,6 +9,7 @@
 
   => => => => =>
    ___
+  |___|
   |   |
   |   |
   |___|
@@ -16,26 +18,51 @@
 <template>
   <div id="main-layout">
     <div id="main-layout--top">
+      <slot name="menu-line">
+        <div style="font-size:30px;font-weight: bold;margin:12px 0 12px 15px;">Zusic</div>
+      </slot>
+    </div>
+    <div id="main-layout--middle">
       <div id="main-layout--left">
         <div class="main-layout-content">
-          <slot name="artist-list"></slot>
+          <div class="list-title">
+            {{i18n.t('artists')}}
+          </div>
+          <div class="list-content">
+            <slot name="artist-list"></slot>
+          </div>
         </div>
       </div>
       <div id="main-layout--center">
         <div id="main-layout--center--top">
           <div class="main-layout-content">
-            <slot name="album-list"></slot>
+            <div class="list-title">
+              {{i18n.t('albums')}}
+            </div>
+            <div class="list-content">
+              <slot name="album-list"></slot>
+            </div>
           </div>
         </div>
         <div id="main-layout--center--bottom">
           <div class="main-layout-content">
-            <slot name="track-list"></slot>
+            <div class="list-title">
+              {{i18n.t('tracks')}}
+            </div>
+            <div class="list-content">
+              <slot name="track-list"></slot>
+            </div>
           </div>
         </div>
       </div>
       <div id="main-layout--right">
         <div class="main-layout-content">
-          <slot name="playlist"></slot>
+          <div class="list-title">
+            {{i18n.t('playlist')}}
+          </div>
+          <div class="list-content">
+            <slot name="playlist"></slot>
+          </div>
         </div>
       </div>
     </div>
@@ -56,6 +83,10 @@
   align-items: stretch;
 
   &--top {
+    height:60px;
+    border-bottom: 1px solid #aaa;
+  }
+  &--middle {
     width:100%;
     flex:1;
     display: flex;
@@ -66,8 +97,8 @@
   }
 
   &--left, &--center, &--right {
-    overflow-x:hidden;
-    overflow-y: auto;
+    overflow:hidden;
+    flex-direction: column;
   }
 
   &--left {
@@ -80,11 +111,12 @@
     width:40%;
 
     &--bottom, &--top {
-      display: block;
-      overflow-x:hidden;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow:hidden;
     }
     &--bottom {
+      margin-top:20px;
       flex:1;
       min-height: 60%;
     }
@@ -95,6 +127,15 @@
 }
 
 .main-layout-content {
-  padding:20px;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-title {
+  flex:1;
+}
+.list-content {
+  overflow-y:auto;
 }
 </style>
