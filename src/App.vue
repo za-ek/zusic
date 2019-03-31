@@ -9,13 +9,13 @@
       </div>
       <div slot="artist-list">
         <div
-          v-for="i in artists"
-          :key="i"
+          v-for="(artist, key) in artists"
+          :key="artist.id"
           class="list-item"
         >
-          <div class="list-item--title">{{i}}</div>
-          <div class="list-item--info">{{i}}</div>
-          <div class="list-item--sub-info"></div>
+          <div class="list-item--title">{{artist.title}}</div>
+          <div class="list-item--info">{{artist.genre.title}}</div>
+          <div class="list-item--sub-info">{{artist.trackCount}}</div>
           <div class="list-item--controls">
             <v-icon name="list"></v-icon>
           </div>
@@ -23,13 +23,16 @@
       </div>
       <div slot="album-list">
         <div
-                v-for="i in albums"
-                :key="i"
+                v-for="(album, key) in albums"
+                :key="album.id"
                 class="list-item"
         >
-          <div class="list-item--title">{{i}}</div>
-          <div class="list-item--info">{{i}}</div>
-          <div class="list-item--sub-info">2000</div>
+          <div class="list-item--title">{{album.title}}</div>
+          <div class="list-item--info">
+            {{album.artist.title}}
+            <span v-if="album.year">- {{album.year}}</span>
+          </div>
+          <div class="list-item--sub-info">{{album.trackCount}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
@@ -38,13 +41,13 @@
       </div>
       <div slot="track-list">
         <div
-                v-for="i in tracks"
-                :key="i"
+                v-for="(track, key) in tracks"
+                :key="track.id"
                 class="list-item"
         >
-          <div class="list-item--title">{{i}}</div>
-          <div class="list-item--info">{{i}}</div>
-          <div class="list-item--sub-info"></div>
+          <div class="list-item--title">{{track.title}}</div>
+          <div class="list-item--info">{{track.album.title}}</div>
+          <div class="list-item--sub-info">{{track.duration}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
@@ -58,8 +61,8 @@
                 class="list-item"
         >
           <div class="list-item--title">{{item.title}}</div>
-          <div class="list-item--info">{{item.info}}</div>
-          <div class="list-item--sub-info">{{item.subInfo}}</div>
+          <div class="list-item--info">{{item.album.title}}</div>
+          <div class="list-item--sub-info">{{item.duration}}</div>
           <div class="list-item--controls">
             <v-icon name="x"></v-icon>
           </div>
@@ -93,26 +96,29 @@ export default {
   name: 'app',
   data () {
     return {
-      artists: [],
-      albums: [],
-      tracks: []
     }
   },
   computed: {
     ...mapState({
-      playlist: state => state.Playlist.playlist
+      playlist: state => state.Playlist.playlist,
+      artists: state => state.Artists.artists,
+      albums: state => state.Albums.albums,
+      tracks: state => state.Tracks.tracks
     })
   },
   created () {
     this.loadPlaylist()
-    for (let i = 0; i < 60; i++) {
-      this.artists.push(Math.random().toString(36).substring(7))
-      this.albums.push(Math.random().toString(36).substring(7))
-      this.tracks.push(Math.random().toString(36).substring(7))
-    }
+    this.loadArtistList()
+    this.loadTrackList()
+    this.loadAlbumList()
   },
   methods: {
-    ...mapActions(['loadPlaylist'])
+    ...mapActions([
+      'loadPlaylist',
+      'loadArtistList',
+      'loadAlbumList',
+      'loadTrackList'
+    ])
   },
   components: {
     Layout,

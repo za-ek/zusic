@@ -1,13 +1,12 @@
 export default {
   state: {
-    playlist: [],
-    currentTrack: {}
+    tracks: []
   },
   actions: {
-    loadPlaylist ({ commit }) {
-      let playlist = []
+    loadTrackList ({ commit }) {
+      let list = []
       for (let i = 1; i < 60; i++) {
-        playlist.push({
+        list.push({
           id: i,
           title: Math.random().toString(36).substring(7),
           album: {
@@ -16,12 +15,12 @@ export default {
           duration: '00:00'
         })
       }
-      commit('setPlaylist', playlist)
+      commit('setTrackList', list)
     }
   },
   mutations: {
-    setPlaylist (state, playlist) {
-      state.playlist = playlist
+    setTrackList (state, list) {
+      state.tracks = list
     }
   }
 }
