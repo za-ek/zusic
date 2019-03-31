@@ -53,11 +53,16 @@
       </div>
       <div slot="playlist">
         <div
-                v-for="i in playlist"
-                :key="i"
+                v-for="(item, key) in playlist"
+                :key="key"
                 class="list-item"
         >
-          <div class="list-item--title">{{i}}</div>
+          <div class="list-item--title">{{item.title}}</div>
+          <div class="list-item--info">{{item.info}}</div>
+          <div class="list-item--sub-info">{{item.subInfo}}</div>
+          <div class="list-item--controls">
+            <v-icon name="x"></v-icon>
+          </div>
         </div>
       </div>
       <div slot="play-line" style="width: 100%;border-top:1px solid #999;display: flex">
@@ -80,6 +85,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 import Layout from './layouts/Main'
 import LanguagePicker from './components/LanguagePicker'
 
@@ -89,17 +95,24 @@ export default {
     return {
       artists: [],
       albums: [],
-      tracks: [],
-      playlist: []
+      tracks: []
     }
   },
+  computed: {
+    ...mapState({
+      playlist: state => state.Playlist.playlist
+    })
+  },
   created () {
+    this.loadPlaylist()
     for (let i = 0; i < 60; i++) {
       this.artists.push(Math.random().toString(36).substring(7))
       this.albums.push(Math.random().toString(36).substring(7))
       this.tracks.push(Math.random().toString(36).substring(7))
-      this.playlist.push(Math.random().toString(36).substring(7))
     }
+  },
+  methods: {
+    ...mapActions(['loadPlaylist'])
   },
   components: {
     Layout,
@@ -205,7 +218,7 @@ body {
   margin-right:15px;
 }
 .list-item--controls {
-  width:30px;
+  width:auto;
   align-self: flex-end;
   padding-right:15px;
 }
