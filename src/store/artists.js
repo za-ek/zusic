@@ -25,7 +25,7 @@ export default {
     setArtistList (state, list) {
       state.artists = list
     },
-    setCurrentArtist (state, artistId) {
+      setCurrentArtist (state, artistId) {
       state.currentArtist = state.artists.find(item => item.id === artistId)
     },
     clearCurrentArtist (state) {

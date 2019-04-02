@@ -1,7 +1,8 @@
 export default {
   state: {
     playlist: [],
-    currentTrack: {}
+    currentTrack: null,
+    currentTrackN: -1
   },
   actions: {
     loadPlaylist ({ commit }) {
@@ -11,10 +12,13 @@ export default {
           id: i,
           title: Math.random().toString(36).substring(7),
           artist: {
+            id: i,
             title: Math.random().toString(36).substring(7)
           },
           album: {
-            title: Math.random().toString(36).substring(7)
+            id: i,
+            title: Math.random().toString(36).substring(7),
+            year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
           },
           duration: '00:00'
         })
@@ -31,6 +35,10 @@ export default {
     },
     removeTrackFromPlaylist (state, n) {
       state.playlist.splice(n, 1)
+    },
+    setPlaylistTrack (state, n) {
+      state.currentTrackN = n
+      state.currentTrack = state.playlist[n]
     }
   }
 }

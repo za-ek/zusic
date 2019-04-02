@@ -80,6 +80,7 @@
                 v-for="(item, key) in playlist"
                 :key="key"
                 class="list-item"
+                @click="setPlaylistTrack(key)"
         >
           <div class="list-item--title">{{item.title}}</div>
           <div class="list-item--info">{{item.album.title}}</div>
@@ -94,10 +95,16 @@
       <div slot="play-line" style="width: 100%;border-top:1px solid #999;display: flex">
         <div id="now-playing">
           <div id="now-playing--song">
-            Uknown Artist
+            {{currentTrackArtist || i18n.t('unknown_artist')}}
           </div>
           <div id="now-playing--artist">
-            Unknown Title - Unknown Album - 2000
+            {{currentTrackTitle || i18n.t('unknown_track')}}
+            <span v-if="currentTrackAlbum">
+              - {{currentTrackAlbum}}
+            </span>
+            <span v-if="currentTrackYear">
+              - {{currentTrackYear}}
+            </span>
           </div>
         </div>
         <div id="controls">
@@ -125,11 +132,24 @@ export default {
     ...mapState({
       currentArtist: state => state.Artists.currentArtist,
       currentAlbum: state => state.Albums.currentAlbum,
+      currentTrack: state => state.Playlist.currentTrack,
       playlist: state => state.Playlist.playlist,
       artists: state => state.Artists.artists,
       albums: state => state.Albums.albums,
       tracks: state => state.Tracks.tracks
-    })
+    }),
+    currentTrackArtist () {
+      return this.currentTrack && this.currentTrack.artist.title
+    },
+    currentTrackTitle () {
+      return this.currentTrack && this.currentTrack.title
+    },
+    currentTrackAlbum () {
+      return this.currentTrack && this.currentTrack.album.title
+    },
+    currentTrackYear () {
+      return this.currentTrack && this.currentTrack.album.year
+    }
   },
   created () {
     this.loadPlaylist()
@@ -150,7 +170,8 @@ export default {
       'clearCurrentArtist',
       'setCurrentAlbum',
       'clearCurrentAlbum',
-      'removeTrackFromPlaylist'
+      'removeTrackFromPlaylist',
+      'setPlaylistTrack'
     ])
   },
   watch: {

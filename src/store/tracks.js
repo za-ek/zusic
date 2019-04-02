@@ -16,7 +16,8 @@ export default {
           },
           album: {
             id: i,
-            title: ('albumId' in filter && filter.albumId) ? filter.albumId : Math.random().toString(36).substring(7)
+            title: ('albumId' in filter && filter.albumId) ? filter.albumId : Math.random().toString(36).substring(7),
+            year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
           },
           duration: '00:00'
         })
