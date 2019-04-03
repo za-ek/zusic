@@ -1,0 +1,17 @@
+#main-layout {
+    background: url('http://sfwallpaper.com/images/beach-sunsets-wallpaper-26.jpg');
+}
+#main-layout .list-title {
+    color:#fff;
+    font-weight: bold;
+}
+#main-layout .list-content {
+    background-color: #fff;
+    margin:0 15px;
+}
+#main-layout--middle {
+    padding-bottom:30px;
+}
+#main-layout--bottom {
+    background-color: #fff;
+}
