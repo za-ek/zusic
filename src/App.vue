@@ -68,7 +68,7 @@
         >
           <div class="list-item--title">{{track.title}}</div>
           <div class="list-item--info">{{track.artist.title}} - {{track.album.title}}</div>
-          <div class="list-item--sub-info">{{track.duration}}</div>
+          <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
@@ -79,12 +79,14 @@
         <div
                 v-for="(item, key) in playlist"
                 :key="key"
-                class="list-item"
+                :class="{'list-item': true, 'current': currentPlaylistKey === key}"
                 @click="setPlaylistTrack(key)"
         >
+          <div class="list-item--pre" v-if="key === currentPlaylistKey">&#9724;</div>
+          <div class="list-item--pre" v-else>&#9723;</div>
           <div class="list-item--title">{{item.title}}</div>
           <div class="list-item--info">{{item.album.title}}</div>
-          <div class="list-item--sub-info">{{item.duration}}</div>
+          <div class="list-item--sub-info">{{formatTrackTime(item.duration)}}</div>
           <div class="list-item--controls">
             <v-icon
                     @click.native="removeTrackFromPlaylist(key)"
@@ -93,12 +95,23 @@
         </div>
       </div>
       <div slot="play-line" style="width: 100%;border-top:1px solid #999;display: flex">
+        <Timeline></Timeline>
+        <div id="controls">
+          <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
+          <v-icon @click.native="playerPlay" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
+          <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
+          <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
+        </div>
+        <div id="now-time">
+          <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
+          {{formatTrackTime(currentTrackDuration)}}
+        </div>
         <div id="now-playing">
           <div id="now-playing--song">
-            {{currentTrackArtist || i18n.t('unknown_artist')}}
+            {{currentTrackTitle || i18n.t('unknown_track')}}
           </div>
           <div id="now-playing--artist">
-            {{currentTrackTitle || i18n.t('unknown_track')}}
+            {{currentTrackArtist || i18n.t('unknown_artist')}}
             <span v-if="currentTrackAlbum">
               - {{currentTrackAlbum}}
             </span>
@@ -107,18 +120,14 @@
             </span>
           </div>
         </div>
-        <div id="controls">
-          <v-icon name="skip-back" id="play-line-backward"></v-icon>
-          <v-icon name="play-circle" id="play-line-play"></v-icon>
-          <v-icon name="skip-forward" id="play-line-forward"></v-icon>
-        </div>
       </div>
     </Layout>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
+import Timeline from './components/Timeline'
 import Layout from './layouts/Main'
 import LanguagePicker from './components/LanguagePicker'
 
@@ -134,9 +143,16 @@ export default {
       currentAlbum: state => state.Albums.currentAlbum,
       currentTrack: state => state.Playlist.currentTrack,
       playlist: state => state.Playlist.playlist,
+      currentPlaylistKey: state => state.Playlist.currentTrackN,
       artists: state => state.Artists.artists,
       albums: state => state.Albums.albums,
-      tracks: state => state.Tracks.tracks
+      tracks: state => state.Tracks.tracks,
+      playing: state => state.Player.playing,
+      trackEnd: state => state.Player.trackEnd,
+      currentTrackTime: state => state.Player.currentTime
+    }),
+    ...mapGetters({
+      currentTrackDuration: 'playerDuration'
     }),
     currentTrackArtist () {
       return this.currentTrack && this.currentTrack.artist.title
@@ -165,16 +181,37 @@ export default {
       'loadTrackList'
     ]),
     ...mapMutations([
+      'playerSetTrack',
       'addTrackToPlaylist',
       'setCurrentArtist',
       'clearCurrentArtist',
       'setCurrentAlbum',
       'clearCurrentAlbum',
       'removeTrackFromPlaylist',
-      'setPlaylistTrack'
-    ])
+      'setPlaylistTrack',
+      'playerPlay',
+      'playerPause',
+      'playlistPrevious',
+      'playlistNext'
+    ]),
+    formatTrackTime (v) {
+      var sec_num = parseInt(v, 10);
+      var hours   = Math.floor(sec_num / 3600);
+      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+      if (hours && hours   < 10) {hours   = "0"+hours;}
+      if (minutes < 10) {minutes = "0"+minutes;}
+      if (seconds < 10) {seconds = "0"+seconds;}
+      return (hours ? hours+':' : '')+minutes+':'+seconds;
+    }
   },
   watch: {
+    trackEnd (v) {
+      if (v) {
+        this.playlistNext()
+      }
+    },
     currentArtist (v) {
       this.loadAlbumList(v && v.id)
       this.clearCurrentAlbum()
@@ -189,15 +226,23 @@ export default {
         artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
         albumId: v && v.id
       })
+    },
+    currentTrack (v) {
+      this.playerSetTrack(v)
+      this.playerPlay()
     }
   },
   components: {
     Layout,
-    LanguagePicker
+    LanguagePicker,
+    Timeline
   }
 }
 </script>
 
+<style>
+@import './assets/skin.css';
+</style>
 <style>
 body {
   margin:0;
@@ -205,10 +250,18 @@ body {
   height:100vh;
 }
 
+#now-time {
+  padding-top:22px;
+  padding-left:15px;
+  font-size:18px;
+}
+#now-time-elapsed {
+  color:#666;
+}
 #now-playing {
   flex:1;
   padding-left:15px;
-  padding-top:7px;
+  padding-top:12px;
 }
 #now-playing--song {
   font-size:17px;
@@ -219,10 +272,10 @@ body {
 
 #controls {
   margin-left:15px;
-  padding-top:8px;
+  padding-top:12px;
   display: block;
   height:100%;
-  margin-right:15px;
+  margin-right:0;
 }
 
 #play-line-backward {
@@ -237,7 +290,7 @@ body {
   margin-right:2px;
   color: #fff;
 }
-#play-line-play {
+#play-line-play, #play-line-pause {
   display: block;
   float:left;
   height:24px;
@@ -270,6 +323,10 @@ body {
   padding-top:2px;
   cursor:pointer;
   display: flex;
+}
+.list-item .list-item--pre {
+  color:purple;
+  padding-left:15px;
 }
 .list-item:hover .list-item--title {
   text-decoration: none;
