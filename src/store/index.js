@@ -5,6 +5,7 @@ import Playlist from './playlist'
 import Artists from './artists'
 import Albums from './albums'
 import Tracks from './tracks'
+import Player from './player'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     Playlist,
     Artists,
     Albums,
-    Tracks
+    Tracks,
+    Player
   }
 })
