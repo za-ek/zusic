@@ -5,6 +5,24 @@ export default {
   },
   actions: {
     loadArtistList ({ commit }) {
+      if (process.env.NODE_ENV === 'development') {
+        commit('setTestArtists')
+      } else {
+        // @todo
+      }
+    }
+  },
+  mutations: {
+    setArtistList (state, list) {
+      state.artists = list
+    },
+      setCurrentArtist (state, artistId) {
+      state.currentArtist = state.artists.find(item => item.id === artistId)
+    },
+    clearCurrentArtist (state) {
+      state.currentArtist = null
+    },
+    setTestArtists (state) {
       let list = []
       for (let i = 1; i < 60; i++) {
         list.push({
@@ -18,18 +36,7 @@ export default {
           }
         })
       }
-      commit('setArtistList', list)
-    }
-  },
-  mutations: {
-    setArtistList (state, list) {
       state.artists = list
-    },
-      setCurrentArtist (state, artistId) {
-      state.currentArtist = state.artists.find(item => item.id === artistId)
-    },
-    clearCurrentArtist (state) {
-      state.currentArtist = null
     }
   }
 }

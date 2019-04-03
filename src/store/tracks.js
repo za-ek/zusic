@@ -5,6 +5,19 @@ export default {
   actions: {
     loadTrackList ({ commit }, filter) {
       filter = filter || {}
+      if (process.env.NODE_ENV === 'development') {
+        commit('setTestTracks', filter)
+      } else {
+        // @todo
+        // commit('setTrackList', list)
+      }
+    }
+  },
+  mutations: {
+    setTrackList (state, list) {
+      state.tracks = list
+    },
+    setTestTracks (state, filter) {
       let list = []
       for (let i = 1; i < 60; i++) {
         list.push({
@@ -19,14 +32,9 @@ export default {
             title: ('albumId' in filter && filter.albumId) ? filter.albumId : Math.random().toString(36).substring(7),
             year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
           },
-          duration: '00:00'
+          duration: 100 + parseInt(Math.random() * 50)
         })
       }
-      commit('setTrackList', list)
-    }
-  },
-  mutations: {
-    setTrackList (state, list) {
       state.tracks = list
     }
   }

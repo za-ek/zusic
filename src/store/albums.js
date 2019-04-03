@@ -5,6 +5,24 @@ export default {
   },
   actions: {
     loadAlbumList ({ commit }, artistId) {
+      if (process.env.NODE_ENV === 'development') {
+        commit('setTestAlbums', artistId)
+      } else {
+        // @todo
+      }
+    }
+  },
+  mutations: {
+    setAlbumList (state, list) {
+      state.albums = list
+    },
+    setCurrentAlbum (state, albumId) {
+      state.currentAlbum = state.albums.find(item => item.id === albumId)
+    },
+    clearCurrentAlbum (state) {
+      state.currentAlbum = null
+    },
+    setTestAlbums (state, artistId) {
       let list = []
       for (let i = 1; i < 60; i++) {
         list.push({
@@ -18,18 +36,7 @@ export default {
           trackCount: parseInt(Math.random() * 30)
         })
       }
-      commit('setAlbumList', list)
-    }
-  },
-  mutations: {
-    setAlbumList (state, list) {
       state.albums = list
-    },
-    setCurrentAlbum (state, albumId) {
-      state.currentAlbum = state.albums.find(item => item.id === albumId)
-    },
-    clearCurrentAlbum (state) {
-      state.currentAlbum = null
     }
   }
 }
