@@ -2,7 +2,16 @@
   <div id="app" :class="'skin-' + skin">
     <Layout ref="layout">
       <div slot="menu-line">
-        <div style="position: absolute;top:20px;right:20px;">
+        <div id="menu-switchers">
+          <select v-model="skin">
+            <option
+                v-for="skinName in ['purple', 'green']"
+                :value="skinName"
+                :key="skinName"
+            >
+              {{i18n.t('skin_' + skinName)}}
+            </option>
+          </select>
           <LanguagePicker></LanguagePicker>
         </div>
       </div>
@@ -367,6 +376,16 @@ body {
   }
   #now-time {
     margin:0 auto;
+  }
+}
+#menu-switchers {
+  position: absolute;
+  top:20px;
+  right:20px;
+}
+@media (max-width:768px) {
+  #menu-switchers {
+    display: none;
   }
 }
 </style>
