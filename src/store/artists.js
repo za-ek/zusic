@@ -27,7 +27,7 @@ export default {
       for (let i = 1; i < 60; i++) {
         list.push({
           id: i,
-          title: Math.random().toString(36).substring(7),
+          title: Math.random().toString(36).repeat(1 + Math.random() * 2),
           trackCount: parseInt(Math.random() * 800),
           genre: {
             title: [

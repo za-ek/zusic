@@ -28,7 +28,7 @@ export default {
         list.push({
           id: i,
           year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : '',
-          title: Math.random().toString(36).substring(7),
+          title: Math.random().toString(36).repeat(1 + Math.random() * 3),
           artist: {
             id: i,
             title: (artistId) ? null : Math.random().toString(36).substring(7)

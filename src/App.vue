@@ -1,9 +1,8 @@
 <template>
-  <div id="app">
-    <Layout>
+  <div id="app" :class="'skin-' + skin">
+    <Layout ref="layout">
       <div slot="menu-line">
-        <div style="font-size:30px;font-weight: bold;margin:12px 0 12px 15px;float:left;">Zusic</div>
-        <div style="float:right;margin-top:0;padding-top:20px;padding-right:20px;">
+        <div style="position: absolute;top:20px;right:20px;">
           <LanguagePicker></LanguagePicker>
         </div>
       </div>
@@ -135,6 +134,7 @@ export default {
   name: 'app',
   data () {
     return {
+      skin: 'green'
     }
   },
   computed: {
@@ -241,13 +241,17 @@ export default {
 </script>
 
 <style>
-@import './assets/skin.css';
+@import "http://fonts.fontstorage.com/import/bloggersans.css";
 </style>
-<style>
+<style lang="scss">
+@import './assets/skins/purple.scss';
+@import './assets/skins/green.scss';
+
 body {
   margin:0;
   padding:0;
   height:100vh;
+  font-family: 'Blogger Sans';
 }
 
 #now-time {
@@ -283,22 +287,17 @@ body {
   float:left;
   margin-top:8px;
   height:15px;
-  background-color: purple;
   border-radius: 30px;
   padding:3px;
-  border:2px solid #ed00ed;
   margin-right:2px;
-  color: #fff;
 }
 #play-line-play, #play-line-pause {
   display: block;
   float:left;
   height:24px;
   margin-top: 5px;
-  background-color: purple;
   border-radius: 30px;
   padding:3px;
-  color: #fff;
 }
 #play-line-forward {
   display: block;
@@ -306,11 +305,8 @@ body {
   margin-top:8px;
   margin-left:2px;
   height:15px;
-  background-color: purple;
   border-radius: 30px;
   padding:3px;
-  border:2px solid #ed00ed;
-  color: #fff;
 }
 .list-title {
   font-size:20px;
@@ -318,51 +314,59 @@ body {
   font-weight: bold;
 }
 .list-item {
-  border-bottom: 1px solid #ddd;
   padding-bottom:2px;
   padding-top:2px;
   cursor:pointer;
   display: flex;
 }
 .list-item .list-item--pre {
-  color:purple;
   padding-left:15px;
 }
 .list-item:hover .list-item--title {
   text-decoration: none;
 }
 .list-item--title {
-  font-size:15px;
+  font-size:14px;
   padding-left:15px;
   padding-right:15px;
-  color:purple;
-  text-decoration: underline;
+  line-height: 21px;
+  text-decoration: none;
+  overflow-x: hidden;
+  white-space: nowrap;
+  margin-right:10px;
 }
 .list-item--info {
   font-size:12px;
   padding-top:1px;
-  color:#999;
+  overflow-x: hidden;
+  margin-right:10px;
+  white-space: nowrap;
+  padding-left:5px;
+  line-height:19px;
 }
 .list-item--sub-info {
   align-self: flex-end;
   margin-left: auto;
   font-size:12px;
   padding-top:1px;
-  color:#999;
   margin-right:15px;
+  line-height:19px;
 }
 .list-item--controls {
   width:auto;
   align-self: flex-end;
   padding-right:15px;
-}
-.list-item--controls .icon.filled {
-  fill:black !important;
+  white-space: nowrap;
 }
 .list-item--controls .icon {
   height:12px;
 }
-.list-item--controls .icon.filled:hover {
-  fill:purple !important;
+@media (max-width: 768px) {
+  #now-playing {
+    display: none;
+  }
+  #now-time {
+    margin:0 auto;
+  }
 }
 </style>

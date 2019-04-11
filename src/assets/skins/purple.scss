@@ -1,0 +1,95 @@
+$bg: #fff;
+
+$color: #570057;
+$color-light: rgba(110, 0, 110, 0.51);
+$color-lightness: rgba(87, 0, 87, 0.3);
+
+$text: #111;
+$muted: #999;
+
+$secondary: #ed00ed;
+
+$control: #fff;
+
+.skin-purple {
+  #main-layout {
+    background: url('https://wallpapercave.com/wp/iY1BsYi.jpg');
+
+    .list {
+      &-title {
+        color: $control;
+        font-weight: bold;
+      }
+
+      &-content {
+        background-color: $bg;
+        margin: 0 15px;
+      }
+    }
+
+    &--bottom {
+      background-color: $bg;
+    }
+
+    #play-line {
+      &-backward {
+        background-color: $color;
+        border: 2px solid $secondary;
+        color: $control;
+      }
+
+      &-play, &-pause {
+        background-color: $color;
+        color: $control;
+      }
+
+      &-forward {
+        background-color: $color;
+        border: 2px solid $secondary;
+        color: $control;
+      }
+    }
+
+    #timeline {
+      background: $color-lightness;
+
+      &--loaded {
+        background-color: $color-light;
+      }
+
+      &--elapsed {
+        background-color: $color;
+      }
+    }
+
+    .list-item {
+      border-bottom: 1px solid $color-light;
+
+      &--pre {
+        color: $color;
+      }
+
+      &--title {
+        color: $color;
+      }
+
+      &--info {
+        color: $muted;
+      }
+
+      &--sub-info {
+        color: $text;
+      }
+
+      &--controls {
+        .icon.filled {
+          fill: $text !important;
+
+          &:hover {
+            fill: $color !important;
+          }
+        }
+      }
+    }
+  }
+}
