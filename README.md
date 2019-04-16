@@ -11,6 +11,16 @@ https://github.com/za-ek/zusic
 npm i
 ```
 
+### Environment variables
+Backend URL
+```
+VUE_APP_BACKEND=http://localhost:1234
+```
+Run in testing mode
+```
+VUE_APP_TEST=0|1
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
