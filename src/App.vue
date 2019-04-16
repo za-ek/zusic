@@ -444,7 +444,7 @@ body {
   }
 }
 .group-control {
-  height:30px;
+  height:20px;
   float:right;
   cursor:pointer;
 }
