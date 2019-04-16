@@ -135,7 +135,7 @@
       </div>
     </Layout>
     <div>
-      <audio ref="player">{{i18n.t('browser_no_support')}}</audio>
+      <audio preload="auto" ref="player">{{i18n.t('browser_no_support')}}</audio>
     </div>
   </div>
 </template>

@@ -12,7 +12,8 @@ export default {
   mutations: {
     setAudioDOM (state, DOM) {
       state.player = DOM
-      state.player.ontimeupdate = (e) => {
+      state.player = new Audio()
+      state.player.ontimeupdate = e => {
         state.currentTime = state.player.currentTime
       }
     },
@@ -50,15 +51,6 @@ export default {
       if (state.player) {
         state.player.play()
       }
-      /*
-      state.timeInterval = setInterval(() => {
-        state.currentTime++
-        if (state.currentTime >= state.currentTrack.duration) {
-          state.currentTime = 0
-          state.trackEnd = true
-        }
-      }, 1000)
-      */
       state.playing = true
     },
     playerStop (state) {
@@ -69,6 +61,9 @@ export default {
       state.playing = false
       state.player.pause()
       clearInterval(state.timeInterval)
+    },
+    playerSetPercent (state, p) {
+      state.player.currentTime = p * state.currentTrack.duration
     }
   },
   getters: {

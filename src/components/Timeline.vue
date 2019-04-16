@@ -1,5 +1,5 @@
 <template>
-  <div id="timeline">
+  <div id="timeline" @click="onClick">
     <div ref="timeLoaded" id="timeline--loaded"></div>
     <div ref="timeElapsed" id="timeline--elapsed"></div>
     <div ref="timePoint" id="timeline--point"></div>
@@ -14,8 +14,14 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'playerPlay'
-    ])
+      'playerPlay',
+      'playerSetPercent'
+    ]),
+    onClick (e) {
+      if(e.target.id !== 'timeline--point') {
+        this.playerSetPercent(e.clientX / e.target.offsetWidth)
+      }
+    }
   },
   computed: {
     ...mapState({
