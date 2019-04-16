@@ -34,8 +34,8 @@ export default {
   },
   watch: {
     playerPercent (v) {
-      this.$refs.timeElapsed.style.width = (v) + '%'
-      this.$refs.timePoint.style.marginLeft = (v) + '%'
+      this.$refs.timeElapsed.style.width = (v < 100 ? v : 100) + '%'
+      this.$refs.timePoint.style.marginLeft = (v < 100 ? v : 100) + '%'
     }
   }
 }
@@ -63,7 +63,7 @@ export default {
   }
   &--point {
     position: absolute;
-    left:0%;
+    left:-14px;
     width:12px;
     height:12px;
     margin-top:-2px;
