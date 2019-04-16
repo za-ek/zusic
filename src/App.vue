@@ -50,12 +50,15 @@
           </div>
           <div class="list-item--sub-info">{{album.track_count}}</div>
           <div class="list-item--controls">
+            <!--
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
+            -->
           </div>
         </div>
       </div>
       <div slot="tracks-title">
+        <v-icon name="plus" @click.native="addAlbum" class="group-control"></v-icon>
         {{i18n.t('tracks')}}
         <span v-if="currentArtist" @click="clearCurrentArtist">
           - {{currentArtist.title}}
@@ -78,14 +81,16 @@
           <div class="list-item--info">{{getArtistTitle(track.artist_id)}} - {{getAlbumTitle(track.album_id)}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
+            <!--
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
+            -->
           </div>
         </div>
       </div>
       <div slot="list-title">
         {{i18n.t('playlist')}}
-        <v-icon name="times" style="height:15px;"></v-icon>
+        <v-icon name="x" @click.native="setPlaylist([])" class="group-control"></v-icon>
       </div>
       <div slot="playlist">
         <div
@@ -212,6 +217,7 @@ export default {
       'playerPlay',
       'playerPause',
       'playlistPrevious',
+      'setPlaylist',
       'playlistNext'
     ]),
     formatTrackTime (v) {
@@ -252,6 +258,9 @@ export default {
           }
         )
       )
+    },
+    addAlbum () {
+      this.tracks.forEach(v => this.trackToPlaylist(v))
     }
   },
   watch: {
@@ -433,5 +442,10 @@ body {
   #menu-switchers {
     display: none;
   }
+}
+.group-control {
+  height:30px;
+  float:right;
+  cursor:pointer;
 }
 </style>
