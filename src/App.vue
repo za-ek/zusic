@@ -24,7 +24,7 @@
         >
           <div class="list-item--title">{{artist.title}}</div>
           <div class="list-item--info">{{artist.genre.title}}</div>
-          <div class="list-item--sub-info">{{artist.trackCount}}</div>
+          <div class="list-item--sub-info">{{artist.track_count}}</div>
           <div class="list-item--controls">
             <v-icon name="list"></v-icon>
           </div>
@@ -48,7 +48,7 @@
             {{album.artist.title}}
             <span v-if="album.year">- {{album.year}}</span>
           </div>
-          <div class="list-item--sub-info">{{album.trackCount}}</div>
+          <div class="list-item--sub-info">{{album.track_count}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
