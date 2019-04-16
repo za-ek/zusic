@@ -4,7 +4,6 @@ export default {
     playing: false,
     trackEnd: false,
     currentTime: 0,
-    timeInterval: null,
     player: null
   },
   actions: {
@@ -12,35 +11,30 @@ export default {
   mutations: {
     setAudioDOM (state, DOM) {
       state.player = DOM
-      state.player = new Audio()
       state.player.ontimeupdate = e => {
         state.currentTime = state.player.currentTime
+      }
+      state.player.onended = e => {
+        state.trackEnd = true
       }
     },
     playerSetTrack (state, track) {
       state.currentTrack = track
       state.currentTime = 0
-      clearInterval(state.timeInterval)
       if (state.player) {
-        let source = Array.prototype.filter.call(
+        state.player.pause()
+        let source = Array.prototype.find.call(
           state.player.getElementsByTagName('source'),
             v => v.type === 'audio/mpeg'
         )
-        if (source.length === 0) {
+        if (!source) {
           source = document.createElement('source')
           source.type = 'audio/mpeg'
           state.player.appendChild(source)
-        } else {
-          source = source[0]
-        }
-
-        if(!state.player.paused) {
-          state.player.pause()
         }
 
         source.src = state.currentTrack.url
         state.player.load()
-        state.player.play()
       }
     },
     playerPlay (state) {
@@ -60,7 +54,6 @@ export default {
     playerPause (state) {
       state.playing = false
       state.player.pause()
-      clearInterval(state.timeInterval)
     },
     playerSetPercent (state, p) {
       state.player.currentTime = p * state.currentTrack.duration
