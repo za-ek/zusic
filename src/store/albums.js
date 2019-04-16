@@ -5,10 +5,17 @@ export default {
   },
   actions: {
     loadAlbumList ({ commit }, artistId) {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.VUE_APP_TEST > 0) {
         commit('setTestAlbums', artistId)
       } else {
-        // @todo
+        this._vm.$axios.get(
+          artistId
+            ? `artists/${artistId}/albums`
+            : 'albums'
+        )
+          .then(d => {
+            commit('setAlbumList', d.data.albums)
+          })
       }
     }
   },

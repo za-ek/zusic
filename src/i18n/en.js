@@ -8,5 +8,7 @@ export default {
   unknown_track: 'Unknown track',
 
   skin_green: 'Green',
-  skin_purple: 'Purple'
+  skin_purple: 'Purple',
+
+  browser_no_support: 'This browser has no support HTML audio'
 }

@@ -72,16 +72,20 @@
                 v-for="(track) in tracks"
                 :key="track.id"
                 class="list-item"
-                @click="addTrackToPlaylist(track)"
+                @click="trackToPlaylist(track)"
         >
           <div class="list-item--title">{{track.title}}</div>
-          <div class="list-item--info">{{track.artist.title}} - {{track.album.title}}</div>
+          <div class="list-item--info">{{getArtistTitle(track.artist_id)}} - {{getAlbumTitle(track.album_id)}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
             <v-icon name="play" class="filled"></v-icon>
             <v-icon name="plus"></v-icon>
           </div>
         </div>
+      </div>
+      <div slot="list-title">
+        {{i18n.t('playlist')}}
+        <v-icon name="times" style="height:15px;"></v-icon>
       </div>
       <div slot="playlist">
         <div
@@ -130,6 +134,9 @@
         </div>
       </div>
     </Layout>
+    <div>
+      <audio ref="player">{{i18n.t('browser_no_support')}}</audio>
+    </div>
   </div>
 </template>
 
@@ -182,6 +189,9 @@ export default {
     this.loadTrackList()
     this.loadAlbumList()
   },
+  mounted () {
+    this.setAudioDOM(this.$refs.player)
+  },
   methods: {
     ...mapActions([
       'loadPlaylist',
@@ -190,6 +200,7 @@ export default {
       'loadTrackList'
     ]),
     ...mapMutations([
+      'setAudioDOM',
       'playerSetTrack',
       'addTrackToPlaylist',
       'setCurrentArtist',
@@ -213,6 +224,34 @@ export default {
       if (minutes < 10) {minutes = "0"+minutes;}
       if (seconds < 10) {seconds = "0"+seconds;}
       return (hours ? hours+':' : '')+minutes+':'+seconds;
+    },
+    getArtist (artistId) {
+      let tmp = this.artists.filter(a => a.id === artistId)
+      if (tmp) return tmp[0]
+      return {title:''}
+    },
+    getAlbum (albumId) {
+      let tmp = this.albums.filter(a => a.id === albumId)
+      if (tmp) return tmp[0]
+      return {title:''}
+    },
+    getAlbumTitle (albumId) {
+      let album = this.getAlbum(albumId)
+      return album ? album.title : ''
+    },
+    getArtistTitle (artistId) {
+      let artist = this.getArtist(artistId)
+      return artist ? artist.title : ''
+    },
+    trackToPlaylist (track) {
+      this.addTrackToPlaylist(
+        Object.assign(
+          track, {
+            album: this.getAlbum(track.album_id),
+            artist: this.getArtist(track.artist_id)
+          }
+        )
+      )
     }
   },
   watch: {
@@ -222,19 +261,23 @@ export default {
       }
     },
     currentArtist (v) {
-      this.loadAlbumList(v && v.id)
-      this.clearCurrentAlbum()
-      if (v && v.id) {
-        this.loadTrackList({
-          artistId: v.id
-        })
+      if (v) {
+        this.loadAlbumList(v && v.id)
+        this.clearCurrentAlbum()
+        if (v && v.id) {
+          this.loadTrackList({
+            artistId: v.id
+          })
+        }
       }
     },
     currentAlbum (v) {
-      this.loadTrackList({
-        artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
-        albumId: v && v.id
-      })
+      if (v) {
+        this.loadTrackList({
+          artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
+          albumId: v && v.id
+        })
+      }
     },
     currentTrack (v) {
       this.playerSetTrack(v)
@@ -289,6 +332,9 @@ body {
   display: block;
   height:100%;
   margin-right:0;
+}
+#controls svg {
+  cursor:pointer;
 }
 
 #play-line-backward {

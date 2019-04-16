@@ -5,10 +5,13 @@ export default {
   },
   actions: {
     loadArtistList ({ commit }) {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.VUE_APP_TEST > 0) {
         commit('setTestArtists')
       } else {
-        // @todo
+        this._vm.$axios.get('artists')
+          .then(d => {
+            commit('setArtistList', d.data.artists)
+          })
       }
     }
   },
@@ -16,7 +19,7 @@ export default {
     setArtistList (state, list) {
       state.artists = list
     },
-      setCurrentArtist (state, artistId) {
+    setCurrentArtist (state, artistId) {
       state.currentArtist = state.artists.find(item => item.id === artistId)
     },
     clearCurrentArtist (state) {

@@ -6,7 +6,7 @@ export default {
   },
   actions: {
     loadPlaylist ({ commit }) {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.VUE_APP_TEST > 0) {
         commit('setTestPlaylist')
       } else {
         // @todo
@@ -46,8 +46,12 @@ export default {
       state.playlist.splice(n, 1)
     },
     setPlaylistTrack (state, n) {
-      state.currentTrackN = n
-      state.currentTrack = state.playlist[n]
+      if(state.playlist.length > n) {
+        state.currentTrackN = n
+        state.currentTrack = Object.assign(state.playlist[n], {
+          url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[n].id
+        })
+      }
     },
     setTestPlaylist (state) {
       let playlist = []

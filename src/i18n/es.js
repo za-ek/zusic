@@ -5,5 +5,7 @@ export default {
   playlist: 'Lista de reproducción',
   unknown_artist: 'Artista desconocido',
   unknown_album: 'Álbum desconocido',
-  unknown_track: 'Pista desconocida'
+  unknown_track: 'Pista desconocida',
+
+  browser_no_support: 'Este navegador no tiene soporte para audio HTML.'
 }
