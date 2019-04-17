@@ -59,12 +59,9 @@
       </div>
       <div slot="tracks-title">
         <v-icon name="plus" @click.native="addAlbum" class="group-control"></v-icon>
-        {{i18n.t('tracks')}}
-        <span v-if="currentArtist" @click="clearCurrentArtist">
-          - {{currentArtist.title}}
-        </span>
-        <span v-else-if="currentAlbum">
-          - {{currentAlbum.artist.title}}
+        <v-icon name="play" @click.native="playAlbum" class="group-control"></v-icon>
+        <span v-if="currentAlbum">
+          {{currentAlbum.artist.title}}
         </span>
         <span v-if="currentAlbum" @click="clearCurrentAlbum">
           - {{currentAlbum.title}}
@@ -261,6 +258,12 @@ export default {
     },
     addAlbum () {
       this.tracks.forEach(v => this.trackToPlaylist(v))
+    },
+    playAlbum () {
+      this.setPlaylist([])
+      this.addAlbum()
+      this.setPlaylistTrack(0)
+      this.playerPlay()
     }
   },
   watch: {
