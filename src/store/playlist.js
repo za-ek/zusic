@@ -34,7 +34,9 @@ export default {
       } else {
         state.currentTrackN = state.currentTrackN + 1
       }
-      state.currentTrack = state.playlist[state.currentTrackN]
+      state.currentTrack = Object.assign(state.playlist[state.currentTrackN], {
+        url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[state.currentTrackN].id
+      })
     },
     setPlaylist (state, playlist) {
       state.playlist = playlist

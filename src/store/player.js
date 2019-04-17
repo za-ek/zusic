@@ -11,11 +11,21 @@ export default {
   mutations: {
     setAudioDOM (state, DOM) {
       state.player = DOM
+      state.playing = !state.player.paused
       state.player.ontimeupdate = e => {
         state.currentTime = state.player.currentTime
       }
       state.player.onended = e => {
         state.trackEnd = true
+      }
+      state.player.onpause = e => {
+        state.playing = false
+      }
+      state.player.onplay = e => {
+        state.playing = true
+      }
+      state.player.onplaying = e => {
+        state.playing = true
       }
     },
     playerSetTrack (state, track) {
@@ -43,16 +53,14 @@ export default {
         throw new Error('no track')
       }
       if (state.player) {
+        state.player.load()
         state.player.play()
       }
-      state.playing = true
     },
     playerStop (state) {
-      state.playing = false
       state.currentTime = 0
     },
     playerPause (state) {
-      state.playing = false
       state.player.pause()
     },
     playerSetPercent (state, p) {
