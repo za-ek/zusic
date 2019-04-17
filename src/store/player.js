@@ -55,6 +55,12 @@ export default {
       if (state.player) {
         state.player.load()
         state.player.play()
+
+        document.title = [
+          state.currentTrack.artist.title,
+          state.currentTrack.title,
+          state.currentTrack.album.year
+        ].join(' - ')
       }
     },
     playerStop (state) {
