@@ -13,6 +13,9 @@ $control: #fff;
 
 .skin-green {
   #main-layout {
+    > * {
+      background-color:rgba(0,0,0,0.4);
+    }
     background: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/Hme4C4_7iosf3emf/videoblocks-abstract-psychedelic-background-3d-render-computer-graphics_s-mqowswvg_thumbnail-full01.png');
 
     .list {

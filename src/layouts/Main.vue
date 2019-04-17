@@ -213,6 +213,9 @@ export default {
 .list-title {
 }
 .list-content {
+  outline: 1px solid #666;
+  padding-top:3px;
+  padding-bottom:3px;
   overflow-y:auto;
   flex:1;
 }

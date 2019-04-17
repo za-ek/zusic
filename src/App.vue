@@ -378,8 +378,8 @@ body {
   font-weight: bold;
 }
 .list-item {
-  padding-bottom:2px;
-  padding-top:2px;
+  padding-bottom:0;
+  padding-top:3px;
   cursor:pointer;
   display: flex;
 }
