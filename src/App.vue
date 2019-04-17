@@ -103,7 +103,7 @@
           <div class="list-item--sub-info">{{formatTrackTime(item.duration)}}</div>
           <div class="list-item--controls">
             <v-icon
-                    @click.native="removeTrackFromPlaylist(key)"
+                    @click.native.stop="removeTrackFromPlaylist(key)"
                     name="x"></v-icon>
           </div>
         </div>

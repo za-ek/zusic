@@ -44,6 +44,13 @@ export default {
     },
     removeTrackFromPlaylist (state, n) {
       state.playlist.splice(n, 1)
+      if (n < state.currentTrackN) {
+        state.currentTrackN--
+      } else if (n === state.currentTrackN) {
+        state.currentTrack = Object.assign(state.playlist[state.currentTrackN], {
+          url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[state.currentTrackN].id
+        })
+      }
     },
     setPlaylistTrack (state, n) {
       if(state.playlist.length > n) {
