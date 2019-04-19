@@ -4,7 +4,7 @@ VueJS front-end for web mp3-player
 
 https://github.com/za-ek/zusic
 
-[Demo](url=http://music.za-ek.ru)
+<a href="http://music.za-ek.ru">Demo on music.za-ek.ru</a>
 
 ## Project setup
 ```
