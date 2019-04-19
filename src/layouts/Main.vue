@@ -138,9 +138,6 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    artistSelected () {
-      console.log('artist selected')
-    },
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
