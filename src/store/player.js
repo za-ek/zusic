@@ -53,7 +53,6 @@ export default {
         throw new Error('no track')
       }
       if (state.player) {
-        state.player.load()
         state.player.play()
 
         document.title = [
