@@ -75,7 +75,7 @@
                 @click="trackToPlaylist(track)"
         >
           <div class="list-item--title">{{track.title}}</div>
-          <div class="list-item--info">{{getArtistTitle(track.artist_id)}} - {{getAlbumTitle(track.album_id)}}</div>
+          <div class="list-item--info">{{track.artist.title}} - {{track.album.title}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
             <!--
@@ -228,33 +228,8 @@ export default {
       if (seconds < 10) {seconds = "0"+seconds;}
       return (hours ? hours+':' : '')+minutes+':'+seconds;
     },
-    getArtist (artistId) {
-      let tmp = this.artists.filter(a => a.id === artistId)
-      if (tmp) return tmp[0]
-      return {title:''}
-    },
-    getAlbum (albumId) {
-      let tmp = this.albums.filter(a => a.id === albumId)
-      if (tmp) return tmp[0]
-      return {title:''}
-    },
-    getAlbumTitle (albumId) {
-      let album = this.getAlbum(albumId)
-      return album ? album.title : ''
-    },
-    getArtistTitle (artistId) {
-      let artist = this.getArtist(artistId)
-      return artist ? artist.title : ''
-    },
     trackToPlaylist (track) {
-      this.addTrackToPlaylist(
-        Object.assign(
-          track, {
-            album: this.getAlbum(track.album_id),
-            artist: this.getArtist(track.artist_id)
-          }
-        )
-      )
+      this.addTrackToPlaylist(track)
     },
     addAlbum () {
       this.tracks.forEach(v => this.trackToPlaylist(v))
