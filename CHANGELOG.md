@@ -1,3 +1,9 @@
+<a name="0.1.2"></a>
+# [0.1.2](https://github.com/za-ek/zusic/tree/0.1.2) (2019-04-19)
+### Features
+
+* Now you can sort items in playlist (only desktop) ([b8c573e4](https://github.com/za-ek/zusic/commit/b8c573e4))
+
 <a name="0.1.1"></a>
 # [0.1.1](https://github.com/za-ek/zusic/tree/0.1.1) (2019-04-19)
 ### Bug Fixes
