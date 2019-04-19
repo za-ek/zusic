@@ -81,6 +81,16 @@ export default {
         })
       }
       state.playlist = playlist
+    },
+    playlistMove (state, changes) {
+      state.playlist.splice(changes.m, 0, state.playlist.splice(changes.n, 1)[0])
+      if(state.currentTrackN === changes.n) {
+        state.currentTrackN = changes.m
+      } else if (state.currentTrackN < changes.n && state.currentTrackN >= changes.m) {
+        state.currentTrackN++
+      } else if (state.currentTrackN > changes.n && state.currentTrackN <= changes.m) {
+        state.currentTrackN--
+      }
     }
   }
 }

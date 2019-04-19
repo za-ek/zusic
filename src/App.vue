@@ -93,11 +93,11 @@
         <div
                 v-for="(item, key) in playlist"
                 :key="key"
-                :class="{'list-item': true, 'current': currentPlaylistKey === key}"
+                :class="{'list-item': true, 'playlist-item': true, 'current': currentPlaylistKey === key}"
                 @click="setPlaylistTrack(key)"
         >
-          <div class="list-item--pre" v-if="key === currentPlaylistKey">&#9724;</div>
-          <div class="list-item--pre" v-else>&#9723;</div>
+          <div class="list-item--pre" v-if="key === currentPlaylistKey" v-order-btn>&#9724;</div>
+          <div class="list-item--pre" v-else v-order-btn>&#9723;</div>
           <div class="list-item--title">{{item.title}}</div>
           <div class="list-item--info">{{item.album.title}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(item.duration)}}</div>
@@ -186,6 +186,7 @@ export default {
     }
   },
   created () {
+    this.$eventHub.$on('playlist-move', this.playlistMove)
     this.loadPlaylist()
     this.loadArtistList()
     this.loadTrackList()
@@ -202,6 +203,7 @@ export default {
       'loadTrackList'
     ]),
     ...mapMutations([
+      'playlistMove',
       'setAudioDOM',
       'playerSetTrack',
       'addTrackToPlaylist',
