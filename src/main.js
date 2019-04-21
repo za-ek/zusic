@@ -11,7 +11,7 @@ Vue.use(i18n)
 Vue.use(feather, 'v-icon')
 
 Vue.directive('order-btn', {
-  bind: function (el, binding, vnode) {
+  bind: function (el) {
     let clone
     const
       onDown = e => {
@@ -24,7 +24,7 @@ Vue.directive('order-btn', {
         document.body.appendChild(clone)
         dragStart()
       },
-      onUp = e => {
+      onUp = () => {
         if (clone) {
           clone.parentNode.removeChild(clone)
           clone = null

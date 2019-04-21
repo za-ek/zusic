@@ -12,19 +12,19 @@ export default {
     setAudioDOM (state, DOM) {
       state.player = DOM
       state.playing = !state.player.paused
-      state.player.ontimeupdate = e => {
+      state.player.ontimeupdate = () => {
         state.currentTime = state.player.currentTime
       }
-      state.player.onended = e => {
+      state.player.onended = () => {
         state.trackEnd = true
       }
-      state.player.onpause = e => {
+      state.player.onpause = () => {
         state.playing = false
       }
-      state.player.onplay = e => {
+      state.player.onplay = () => {
         state.playing = true
       }
-      state.player.onplaying = e => {
+      state.player.onplaying = () => {
         state.playing = true
       }
     },
