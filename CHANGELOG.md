@@ -1,11 +1,17 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/za-ek/zusic/tree/0.1.3) (2019-04-21)
+### Features
+
+* Show audio load progress ([a9c38c77](https://github.com/za-ek/zusic/commit/a9c38c77))
+
 <a name="0.1.2"></a>
-# [0.1.2](https://github.com/za-ek/zusic/tree/0.1.2) (2019-04-19)
+## [0.1.2](https://github.com/za-ek/zusic/tree/0.1.2) (2019-04-19)
 ### Features
 
 * Now you can sort items in playlist (only desktop) ([b8c573e4](https://github.com/za-ek/zusic/commit/b8c573e4))
 
 <a name="0.1.1"></a>
-# [0.1.1](https://github.com/za-ek/zusic/tree/0.1.1) (2019-04-19)
+## [0.1.1](https://github.com/za-ek/zusic/tree/0.1.1) (2019-04-19)
 ### Bug Fixes
 
 * **Fixed:** Press play after pause resume the track ([4e1dace0](https://github.com/za-ek/zusic/commit/4e1dace0))
