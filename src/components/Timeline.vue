@@ -19,14 +19,15 @@ export default {
     ]),
     onClick (e) {
       if(e.target.id !== 'timeline--point') {
-        this.playerSetPercent(e.clientX / e.target.offsetWidth)
+        this.playerSetPercent(e.clientX / document.getElementById('timeline').offsetWidth)
       }
     }
   },
   computed: {
     ...mapState({
       currentTrack: state => state.Playlist.playlist.currentTrack,
-      currentTrackTime: state => state.Player.currentTime
+      currentTrackTime: state => state.Player.currentTime,
+      loaded: state => state.Player.loaded,
     }),
     ...mapGetters({
       playerPercent: 'playerPercent'
@@ -36,6 +37,9 @@ export default {
     playerPercent (v) {
       this.$refs.timeElapsed.style.width = (v < 100 ? v : 100) + '%'
       this.$refs.timePoint.style.marginLeft = (v < 100 ? v : 100) + '%'
+    },
+    loaded (v) {
+      this.$refs.timeLoaded.style.width = (v < 100 ? v : 100) + '%'
     }
   }
 }

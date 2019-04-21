@@ -4,7 +4,8 @@ export default {
     playing: false,
     trackEnd: false,
     currentTime: 0,
-    player: null
+    player: null,
+    loaded: 0
   },
   actions: {
   },
@@ -31,6 +32,7 @@ export default {
     playerSetTrack (state, track) {
       state.currentTrack = track
       state.currentTime = 0
+      state.loaded = 0
       if (state.player) {
         state.player.pause()
         let source = Array.prototype.find.call(
@@ -45,6 +47,15 @@ export default {
 
         source.src = state.currentTrack.url
         state.player.load()
+        state.player.onprogress = () => {
+
+          if(state.player.buffered.length) {
+            state.loaded = 100 * state.player.buffered.end(state.player.buffered.length - 1) / state.player.duration
+            if (state.loaded >= 100) {
+              state.loaded = 100
+            }
+          }
+        }
       }
     },
     playerPlay (state) {
