@@ -1,3 +1,4 @@
+import Vue from 'vue'
 export default {
   state: {
     playlist: [],
@@ -15,6 +16,17 @@ export default {
     }
   },
   mutations: {
+    shufflePlaylist (state) {
+      for (let i = state.playlist.length - 1, j; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        [state.playlist[i], state.playlist[j]] = [state.playlist[j], state.playlist[i]];
+      }
+      /**
+       * Trigger update
+       * @see https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+       */
+      Vue.set(state.playlist, 0, state.playlist[0])
+    },
     playlistPrevious (state) {
       if (state.currentTrackN > 0) {
         state.currentTrackN = state.currentTrackN - 1

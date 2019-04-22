@@ -88,6 +88,7 @@
       <div slot="list-title">
         {{i18n.t('playlist')}}
         <v-icon name="x" @click.native="setPlaylist([])" class="group-control"></v-icon>
+        <v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon>
       </div>
       <div slot="playlist">
         <div
@@ -203,6 +204,7 @@ export default {
       'loadTrackList'
     ]),
     ...mapMutations([
+      'shufflePlaylist',
       'playlistMove',
       'setAudioDOM',
       'playerSetTrack',
