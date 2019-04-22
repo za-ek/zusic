@@ -50,7 +50,13 @@ export default {
         state.player.onprogress = () => {
 
           if(state.player.buffered.length) {
-            state.loaded = 100 * state.player.buffered.end(state.player.buffered.length - 1) / state.player.duration
+            let end = 0
+            for(let i = 0; i < state.player.buffered.length; i++) {
+              if (state.player.buffered.end(i) > end) {
+                end = state.player.buffered.end(i)
+              }
+            }
+            state.loaded = 100 * end / state.player.duration
             if (state.loaded >= 100) {
               state.loaded = 100
             }
