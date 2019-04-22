@@ -86,7 +86,14 @@ export default {
       state.player.pause()
     },
     playerSetPercent (state, p) {
-      state.player.currentTime = p * state.currentTrack.duration
+      if (state.player) {
+        state.player.currentTime = p * state.currentTrack.duration
+      }
+    },
+    playerSetTime (state, t) {
+      if (state.player) {
+        state.player.currentTime = t
+      }
     }
   },
   getters: {
