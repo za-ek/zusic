@@ -194,6 +194,8 @@ export default {
     this.loadAlbumList()
     try {
       this.setPlaylist(JSON.parse(localStorage.getItem('playlist')))
+      let currentTrack = JSON.parse(localStorage.getItem('currentTrack'))
+      this.setPlaylistTrack(this.playlist.findIndex(i => i.id === currentTrack.id))
     } catch (e) {
     }
   },
@@ -208,6 +210,7 @@ export default {
       'loadTrackList'
     ]),
     ...mapMutations([
+      'playerSetTime',
       'shufflePlaylist',
       'playlistMove',
       'setAudioDOM',
@@ -275,8 +278,13 @@ export default {
       }
     },
     currentTrack (v) {
-      this.playerSetTrack(v)
-      this.playerPlay()
+      if(this.playing) {
+        this.playerSetTrack(v)
+        this.playerPlay()
+      } else {
+        this.playerSetTrack(v)
+      }
+      localStorage.setItem('currentTrack', JSON.stringify(v))
     },
     playlist: {
       handler (v) {
