@@ -1,3 +1,10 @@
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/za-ek/zusic/tree/0.1.4) (2019-04-22)
+* Shuffle playlist ([1cf1602f](https://github.com/za-ek/zusic/commit/1cf1602f))
+* Fix last buffered to max time ([233de49d](https://github.com/za-ek/zusic/commit/233de49d))
+* Save current playlist ([881b6f47](https://github.com/za-ek/zusic/commit/881b6f47))
+* Store current track time ([bbb22cc1](https://github.com/za-ek/zusic/commit/bbb22cc1))
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/za-ek/zusic/tree/0.1.3) (2019-04-21)
 ### Features
