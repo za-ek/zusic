@@ -51,7 +51,7 @@ export default {
       })
     },
     setPlaylist (state, playlist) {
-      state.playlist = playlist
+      state.playlist = playlist || []
     },
     addTrackToPlaylist (state, track) {
       state.playlist.push(track)
