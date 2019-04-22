@@ -192,6 +192,10 @@ export default {
     this.loadArtistList()
     this.loadTrackList()
     this.loadAlbumList()
+    try {
+      this.setPlaylist(JSON.parse(localStorage.getItem('playlist')))
+    } catch (e) {
+    }
   },
   mounted () {
     this.setAudioDOM(this.$refs.player)
@@ -273,6 +277,12 @@ export default {
     currentTrack (v) {
       this.playerSetTrack(v)
       this.playerPlay()
+    },
+    playlist: {
+      handler (v) {
+        localStorage.setItem('playlist', JSON.stringify(v))
+      },
+      deep: true
     }
   },
   components: {
