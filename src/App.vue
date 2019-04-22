@@ -196,6 +196,7 @@ export default {
       this.setPlaylist(JSON.parse(localStorage.getItem('playlist')))
       let currentTrack = JSON.parse(localStorage.getItem('currentTrack'))
       this.setPlaylistTrack(this.playlist.findIndex(i => i.id === currentTrack.id))
+      this.playerPause()
     } catch (e) {
     }
   },
@@ -278,12 +279,8 @@ export default {
       }
     },
     currentTrack (v) {
-      if(this.playing) {
-        this.playerSetTrack(v)
-        this.playerPlay()
-      } else {
-        this.playerSetTrack(v)
-      }
+      this.playerSetTrack(v)
+      this.playerPlay()
       localStorage.setItem('currentTrack', JSON.stringify(v))
     },
     playlist: {
