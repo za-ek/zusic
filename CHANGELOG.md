@@ -1,3 +1,10 @@
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/za-ek/zusic/tree/0.1.5)
+#### Code improvements 
+* Moving directive in separate file ([e5b3b50d](https://github.com/za-ek/zusic/commit/e5b3b50d))
+* Namespaced store ([c79f9f5e](https://github.com/za-ek/zusic/commit/c79f9f5e))
+* Language picker - list order ([0c7b87d3](https://github.com/za-ek/zusic/commit/0c7b87d3))
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/za-ek/zusic/tree/0.1.4) (2019-04-22)
 * Shuffle playlist ([1cf1602f](https://github.com/za-ek/zusic/commit/1cf1602f))
