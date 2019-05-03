@@ -2,10 +2,10 @@
   <select v-model="i18n.locale">
     <option
             :value="lang"
-            v-for="(name, lang) in languageList"
+            v-for="(lang) in languageList"
             :key="lang"
     >
-      {{name}}
+      {{localeNames ? i18n.t(lang) : nativeName[lang]}}
     </option>
   </select>
 </template>
@@ -14,16 +14,16 @@
 export default {
   data () {
     return {
-      language: 'en',
-      languageList: {
+      languageList: [
+        'en', 'es', 'ru'
+      ],
+      nativeName: {
         en: 'English',
         es: 'Español',
         ru: 'Русский'
       }
     }
   },
-  created () {
-    this.language = this.i18n.locale
-  }
+  props: ['localeNames']
 }
 </script>
