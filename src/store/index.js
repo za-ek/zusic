@@ -11,10 +11,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    Playlist,
-    Artists,
-    Albums,
-    Tracks,
-    Player
+    Player: {
+      namespaced: true,
+      modules: {
+        Playlist,
+        Artists,
+        Albums,
+        Tracks,
+        Player
+      }
+    }
   }
 })

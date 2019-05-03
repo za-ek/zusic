@@ -158,19 +158,19 @@ export default {
   },
   computed: {
     ...mapState({
-      currentArtist: state => state.Artists.currentArtist,
-      currentAlbum: state => state.Albums.currentAlbum,
-      currentTrack: state => state.Playlist.currentTrack,
-      playlist: state => state.Playlist.playlist,
-      currentPlaylistKey: state => state.Playlist.currentTrackN,
-      artists: state => state.Artists.artists,
-      albums: state => state.Albums.albums,
-      tracks: state => state.Tracks.tracks,
-      playing: state => state.Player.playing,
-      trackEnd: state => state.Player.trackEnd,
-      currentTrackTime: state => state.Player.currentTime
+      currentArtist: state => state.Player.Artists.currentArtist,
+      currentAlbum: state => state.Player.Albums.currentAlbum,
+      currentTrack: state => state.Player.Playlist.currentTrack,
+      playlist: state => state.Player.Playlist.playlist,
+      currentPlaylistKey: state => state.Player.Playlist.currentTrackN,
+      artists: state => state.Player.Artists.artists,
+      albums: state => state.Player.Albums.albums,
+      tracks: state => state.Player.Tracks.tracks,
+      playing: state => state.Player.Player.playing,
+      trackEnd: state => state.Player.Player.trackEnd,
+      currentTrackTime: state => state.Player.Player.currentTime
     }),
-    ...mapGetters({
+    ...mapGetters('Player', {
       currentTrackDuration: 'playerDuration'
     }),
     currentTrackArtist () {
@@ -204,13 +204,13 @@ export default {
     this.setAudioDOM(this.$refs.player)
   },
   methods: {
-    ...mapActions([
+    ...mapActions('Player', [
       'loadPlaylist',
       'loadArtistList',
       'loadAlbumList',
       'loadTrackList'
     ]),
-    ...mapMutations([
+    ...mapMutations('Player', [
       'playerSetTime',
       'shufflePlaylist',
       'playlistMove',

@@ -13,7 +13,7 @@ export default {
     // this.playerPlay()
   },
   methods: {
-    ...mapMutations([
+    ...mapMutations('Player', [
       'playerPlay',
       'playerSetPercent'
     ]),
@@ -24,12 +24,12 @@ export default {
     }
   },
   computed: {
-    ...mapState({
+    ...mapState('Player', {
       currentTrack: state => state.Playlist.playlist.currentTrack,
       currentTrackTime: state => state.Player.currentTime,
       loaded: state => state.Player.loaded,
     }),
-    ...mapGetters({
+    ...mapGetters('Player', {
       playerPercent: 'playerPercent'
     })
   },
