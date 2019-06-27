@@ -7,5 +7,8 @@ export default {
   unknown_album: 'Неизвестный альбом',
   unknown_track: 'Неизвестный трек',
 
-  browser_no_support: 'Данный браузер не поддерживает audio HTML'
+  browser_no_support: 'Данный браузер не поддерживает audio HTML',
+
+  random_playlist: 'Сгенерировать плейлист',
+  all_apologies: 'Простите, это пока не работает'
 }

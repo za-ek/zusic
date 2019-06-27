@@ -14,5 +14,8 @@ export default {
 
   en: 'English',
   es: 'Spanish',
-  ru: 'Russian'
+  ru: 'Russian',
+
+  random_playlist: 'Random playlist',
+  all_apologies: 'All apologies this is doesn\'t work'
 }

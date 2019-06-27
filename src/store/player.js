@@ -73,9 +73,9 @@ export default {
         state.player.play()
 
         document.title = [
-          state.currentTrack.artist.title,
+          (state.currentTrack.artist) ? state.currentTrack.artist.title : this._vm.i18n.t('unknown_artist'),
           state.currentTrack.title,
-          state.currentTrack.album.year
+          state.currentTrack.album ? state.currentTrack.album.year : '...'
         ].join(' - ')
       }
     },

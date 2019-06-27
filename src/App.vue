@@ -3,6 +3,7 @@
     <Layout ref="layout">
       <div slot="menu-line">
         <div id="menu-switchers">
+          <button id="random-playlist" @click="loadRandomPlaylist">{{i18n.t('random_playlist')}}</button>
           <select v-model="skin">
             <option
                 v-for="skinName in ['purple', 'green']"
@@ -91,26 +92,16 @@
         <v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon>
       </div>
       <div slot="playlist">
-        <div
-                v-for="(item, key) in playlist"
-                :key="key"
-                :class="{'list-item': true, 'playlist-item': true, 'current': currentPlaylistKey === key}"
-                @click="setPlaylistTrack(key)"
-        >
-          <div class="list-item--pre" v-if="key === currentPlaylistKey" v-order-btn>&#9724;</div>
-          <div class="list-item--pre" v-else v-order-btn>&#9723;</div>
-          <div class="list-item--title">{{item.title}}</div>
-          <div class="list-item--info">{{item.album.title}}</div>
-          <div class="list-item--sub-info">{{formatTrackTime(item.duration)}}</div>
-          <div class="list-item--controls">
-            <v-icon
-                    @click.native.stop="removeTrackFromPlaylist(key)"
-                    name="x"></v-icon>
-          </div>
-        </div>
+        <PlaylistTrack
+          v-for="(item, key) in playlist"
+          :index="key"
+          :key="key"
+          :track="item"
+          :class="{'list-item': true, 'playlist-item': true, 'current': currentPlaylistKey === key}"
+        />
       </div>
       <div slot="play-line" style="width: 100%;border-top:1px solid #999;display: flex">
-        <Timeline></Timeline>
+        <Timeline/>
         <div id="controls">
           <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
           <v-icon @click.native="playerPlay" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
@@ -146,6 +137,7 @@
 <script>
 import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 import Timeline from './components/Timeline'
+import PlaylistTrack from './components/PlaylistTrack'
 import Layout from './layouts/Main'
 import LanguagePicker from './components/LanguagePicker'
 
@@ -174,16 +166,16 @@ export default {
       currentTrackDuration: 'playerDuration'
     }),
     currentTrackArtist () {
-      return this.currentTrack && this.currentTrack.artist.title
+      return this.currentTrack && this.currentTrack.artist && this.currentTrack.artist.title
     },
     currentTrackTitle () {
       return this.currentTrack && this.currentTrack.title
     },
     currentTrackAlbum () {
-      return this.currentTrack && this.currentTrack.album.title
+      return this.currentTrack && this.currentTrack.album && this.currentTrack.album.title
     },
     currentTrackYear () {
-      return this.currentTrack && this.currentTrack.album.year
+      return this.currentTrack && this.currentTrack.album && this.currentTrack.album.year
     }
   },
   created () {
@@ -208,7 +200,8 @@ export default {
       'loadPlaylist',
       'loadArtistList',
       'loadAlbumList',
-      'loadTrackList'
+      'loadTrackList',
+      'loadRandomPlaylist'
     ]),
     ...mapMutations('Player', [
       'playerSetTime',
@@ -229,17 +222,6 @@ export default {
       'setPlaylist',
       'playlistNext'
     ]),
-    formatTrackTime (v) {
-      var sec_num = parseInt(v, 10);
-      var hours   = Math.floor(sec_num / 3600);
-      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-      var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-      if (hours && hours   < 10) {hours   = "0"+hours;}
-      if (minutes < 10) {minutes = "0"+minutes;}
-      if (seconds < 10) {seconds = "0"+seconds;}
-      return (hours ? hours+':' : '')+minutes+':'+seconds;
-    },
     trackToPlaylist (track) {
       this.addTrackToPlaylist(track)
     },
@@ -293,7 +275,8 @@ export default {
   components: {
     Layout,
     LanguagePicker,
-    Timeline
+    Timeline,
+    PlaylistTrack
   }
 }
 </script>

@@ -7,5 +7,8 @@ export default {
   unknown_album: 'Álbum desconocido',
   unknown_track: 'Pista desconocida',
 
-  browser_no_support: 'Este navegador no tiene soporte para audio HTML.'
+  browser_no_support: 'Este navegador no tiene soporte para audio HTML.',
+
+  random_playlist: 'Lista aleatória',
+  all_apologies: 'Disculpen las molestias. Esto no funciona aun'
 }

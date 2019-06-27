@@ -1,3 +1,11 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/za-ek/zusic/tree/0.1.6)
+#### Code improvements 
+* Mark correct current track after playlist shuffle
+
+### Features
+* Random playlist
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/za-ek/zusic/tree/0.1.5)
 #### Code improvements 

@@ -13,10 +13,24 @@ export default {
         // @todo
         // commit('setPlaylist', playlist)
       }
+    },
+    loadRandomPlaylist ({ commit }) {
+      this._vm.$axios.get('tracks/random')
+        .then(d => {
+          commit('setPlaylist', d.data.tracks)
+        })
+        .catch(e => {
+          if(process.env.VUE_APP_DEVELOPMENT > 0) {
+            console.log(e)
+          } else {
+            alert(this._vm.i18n.t('all_apologies'))
+          }
+        })
     }
   },
   mutations: {
     shufflePlaylist (state) {
+      let id = state.currentTrack.id
       for (let i = state.playlist.length - 1, j; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
         [state.playlist[i], state.playlist[j]] = [state.playlist[j], state.playlist[i]];
@@ -26,6 +40,7 @@ export default {
        * @see https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
        */
       Vue.set(state.playlist, 0, state.playlist[0])
+      state.currentTrackN = state.playlist.findIndex(i => i.id === id)
     },
     playlistPrevious (state) {
       if (state.currentTrackN > 0) {
@@ -52,6 +67,7 @@ export default {
     },
     setPlaylist (state, playlist) {
       state.playlist = playlist || []
+      state.currentTrackN = -1
     },
     addTrackToPlaylist (state, track) {
       state.playlist.push(track)
