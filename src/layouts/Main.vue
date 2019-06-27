@@ -174,6 +174,7 @@ export default {
   &--left, &--center, &--right {
     overflow:hidden;
     flex-direction: column;
+    max-height: 100%;
   }
 
   &--left {
@@ -203,6 +204,7 @@ export default {
 
 .main-layout-content {
   height:100%;
+  max-height:100%;
   display: flex;
   flex-direction: column;
 }

@@ -83,7 +83,9 @@ export default {
       state.currentTime = 0
     },
     playerPause (state) {
-      state.player.pause()
+      if (state.player) {
+        state.player.pause()
+      }
     },
     playerSetPercent (state, p) {
       if (state.player) {
