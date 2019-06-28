@@ -4,8 +4,8 @@
       <div slot="menu-line">
         <div id="menu-switchers">
           <div id="network-status">
-            <v-icon :title="a" v-if="online" name="wifi"></v-icon>
-            <v-icon :title="a" v-else name="wifi-off"></v-icon>
+            <v-icon v-if="online" name="wifi"></v-icon>
+            <v-icon v-else name="wifi-off"></v-icon>
           </div>
           <select v-model="skin">
             <option

@@ -9,6 +9,7 @@ export default {
 
   skin_green: 'Green',
   skin_purple: 'Purple',
+  skin_dark: 'Dark',
 
   browser_no_support: 'This browser has no support HTML audio',
 
