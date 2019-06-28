@@ -186,6 +186,7 @@ export default {
     }
   },
   created () {
+    this.skin = localStorage.getItem('skin') || 'purple'
     this.$eventHub.$on('playlist-move', this.playlistMove)
     this.$eventHub.$on('network-error', this.networkError)
     this.$eventHub.$on('network-success', () => { this.online = true })
@@ -323,6 +324,9 @@ export default {
     }
   },
   watch: {
+    skin (v) {
+      localStorage.setItem('skin', v)
+    },
     trackEnd (v) {
       if (v) {
         this.playlistNext()
