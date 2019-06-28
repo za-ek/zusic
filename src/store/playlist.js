@@ -7,12 +7,6 @@ export default {
   },
   actions: {
     loadPlaylist ({ commit }) {
-      if (process.env.VUE_APP_TEST > 0) {
-        commit('setTestPlaylist')
-      } else {
-        // @todo
-        // commit('setPlaylist', playlist)
-      }
     },
     loadRandomPlaylist ({ commit }) {
       this._vm.$axios.get('tracks/random')
@@ -89,26 +83,6 @@ export default {
           url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[n].id
         })
       }
-    },
-    setTestPlaylist (state) {
-      let playlist = []
-      for (let i = 1; i < 60; i++) {
-        playlist.push({
-          id: i,
-          title: Math.random().toString(36).repeat(1 + Math.random() * 2),
-          artist: {
-            id: i,
-            title: Math.random().toString(36).repeat(1 + Math.random() * 2)
-          },
-          album: {
-            id: i,
-            title: Math.random().toString(36).repeat(1 + Math.random() * 2),
-            year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
-          },
-          duration: 100 + parseInt(Math.random() * 50)
-        })
-      }
-      state.playlist = playlist
     },
     playlistMove (state, changes) {
       state.playlist.splice(changes.m, 0, state.playlist.splice(changes.n, 1)[0])

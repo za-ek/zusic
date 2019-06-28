@@ -5,14 +5,10 @@ export default {
   },
   actions: {
     loadArtistList ({ commit }) {
-      if (process.env.VUE_APP_TEST > 0) {
-        commit('setTestArtists')
-      } else {
-        this._vm.$axios.get('artists')
-          .then(d => {
-            commit('setArtistList', d.data.artists)
-          })
-      }
+      this._vm.$axios.get('artists')
+        .then(d => {
+          commit('setArtistList', d.data.artists)
+        })
     }
   },
   mutations: {
@@ -24,22 +20,6 @@ export default {
     },
     clearCurrentArtist (state) {
       state.currentArtist = null
-    },
-    setTestArtists (state) {
-      let list = []
-      for (let i = 1; i < 60; i++) {
-        list.push({
-          id: i,
-          title: Math.random().toString(36).repeat(1 + Math.random() * 2),
-          trackCount: parseInt(Math.random() * 800),
-          genre: {
-            title: [
-              'rock', 'reggae', 'pop', 'indie', 'goa'
-            ][parseInt(Math.random() * 5)]
-          }
-        })
-      }
-      state.artists = list
     }
   }
 }

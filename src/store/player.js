@@ -11,6 +11,9 @@ export default {
   },
   mutations: {
     setAudioDOM (state, DOM) {
+      if (!DOM) {
+        return
+      }
       state.player = DOM
       state.playing = !state.player.paused
       state.player.ontimeupdate = () => {

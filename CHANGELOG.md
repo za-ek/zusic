@@ -1,3 +1,6 @@
+#### Code improvements 
+* Move test operations to mixin
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/za-ek/zusic/tree/0.1.6)
 #### Code improvements 

@@ -180,14 +180,8 @@ export default {
   },
   created () {
     this.$eventHub.$on('playlist-move', this.playlistMove)
-    this.loadPlaylist()
-    this.loadArtistList()
-    this.loadTrackList()
-    this.loadAlbumList()
+    this.restoreState()
     try {
-      this.setPlaylist(JSON.parse(localStorage.getItem('playlist')))
-      let currentTrack = JSON.parse(localStorage.getItem('currentTrack'))
-      this.setPlaylistTrack(this.playlist.findIndex(i => i.id === currentTrack.id))
       this.playerPause()
     } catch (e) {
     }

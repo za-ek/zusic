@@ -5,6 +5,7 @@ import axios from 'axios'
 import i18n from './i18n'
 import store from './store'
 import './directives/order-btn'
+import './mixins/state'
 
 Vue.prototype.$eventHub = new Vue();
 
