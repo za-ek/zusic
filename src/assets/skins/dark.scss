@@ -1,22 +1,24 @@
-$bg: #fff;
+$bg: #000000;
 
-$color: #570057;
-$color-light: rgba(110, 0, 110, 0.51);
-$color-lightness: rgba(87, 0, 87, 0.3);
+$color: #7fa8f2;
+$color-light: #8da1d6;
+$color-lightness: #6249ac;
 
-$text: #111;
-$muted: #999;
+$text: #ffffff;
+$muted: #999999;
 
-$secondary: #ed00ed;
+$secondary: #cbc3c9;
 
-$control: #fff;
+$control: #8a12ff;
 
-.skin-purple {
+.skin-dark {
+  color: $text;
+
   #main-layout {
     > * {
-      background-color:rgba(0,0,0,0.4);
+      background-color:rgba(0,0,0,1);
     }
-    background: url('https://www.ubackground.com/_ph/86/849751921.jpg');
+    /* background: url('https://www.ubackground.com/_ph/81/208678227.jpg'); */
 
     .list {
       &-title {
@@ -30,7 +32,7 @@ $control: #fff;
       }
     }
 
-    &--bottom {
+    #main-layout--bottom {
       background-color: $bg;
     }
 

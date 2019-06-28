@@ -7,10 +7,9 @@
             <v-icon :title="a" v-if="online" name="wifi"></v-icon>
             <v-icon :title="a" v-else name="wifi-off"></v-icon>
           </div>
-          <button id="random-playlist" @click="loadRandomPlaylist({api: $axios})">{{i18n.t('random_playlist')}}</button>
           <select v-model="skin">
             <option
-                v-for="skinName in ['purple', 'green']"
+                v-for="skinName in ['purple', 'green', 'dark']"
                 :value="skinName"
                 :key="skinName"
             >
@@ -93,6 +92,7 @@
       <div slot="list-title">
         {{i18n.t('playlist')}}
         <v-icon name="x" @click.native="setPlaylist([])" class="group-control"></v-icon>
+        <v-icon name="hash" @click.native="loadRandomPlaylist({api: $axios})" class="group-control"></v-icon>
         <v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon>
       </div>
       <div slot="playlist">
@@ -149,7 +149,7 @@ export default {
   name: 'app',
   data () {
     return {
-      skin: 'green',
+      skin: 'purple',
       online: false
     }
   },
@@ -377,6 +377,7 @@ export default {
 <style lang="scss">
 @import './assets/skins/purple.scss';
 @import './assets/skins/green.scss';
+@import './assets/skins/dark.scss';
 
 body {
   margin:0;
@@ -386,7 +387,7 @@ body {
 }
 
 #now-time {
-  padding-top:22px;
+  padding-top:25px;
   padding-left:15px;
   font-size:18px;
 }
@@ -396,7 +397,7 @@ body {
 #now-playing {
   flex:1;
   padding-left:15px;
-  padding-top:12px;
+  padding-top:15px;
 }
 #now-playing--song {
   font-size:17px;
@@ -519,6 +520,7 @@ body {
   height:20px;
   float:right;
   cursor:pointer;
+  margin-left:10px;
 }
 #network-status {
   display: inline-block;

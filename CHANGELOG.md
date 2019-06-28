@@ -1,5 +1,7 @@
 ### Features
 * Network indicator
+* Dark theme
+* Random playlist button was moved in playlist button group
 
 #### Code improvements 
 * Move test operations to mixin
