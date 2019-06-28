@@ -97,6 +97,7 @@
       </div>
       <div slot="playlist">
         <PlaylistTrack
+          @click="userPlaying = true"
           v-for="(item, key) in playlist"
           :index="key"
           :key="key"
@@ -108,7 +109,7 @@
         <Timeline/>
         <div id="controls">
           <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
-          <v-icon @click.native="playerPlay" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
+          <v-icon @click.native="playerPlay(); userPlaying = true" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
           <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
           <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
         </div>
@@ -150,7 +151,8 @@ export default {
   data () {
     return {
       skin: 'purple',
-      online: false
+      online: false,
+      userPlaying: false
     }
   },
   computed: {
@@ -230,6 +232,7 @@ export default {
       this.addAlbum()
       this.setPlaylistTrack(0)
       this.playerPlay()
+      this.userPlaying = true
     },
     networkError () {
       this.online = false
@@ -352,7 +355,9 @@ export default {
     },
     currentTrack (v) {
       this.playerSetTrack(v)
-      this.playerPlay()
+      if(this.userPlaying) {
+        this.playerPlay()
+      }
       localStorage.setItem('currentTrack', JSON.stringify(v))
     },
     playlist: {
