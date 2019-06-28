@@ -3,7 +3,11 @@
     <Layout ref="layout">
       <div slot="menu-line">
         <div id="menu-switchers">
-          <button id="random-playlist" @click="loadRandomPlaylist">{{i18n.t('random_playlist')}}</button>
+          <div id="network-status">
+            <v-icon :title="a" v-if="online" name="wifi"></v-icon>
+            <v-icon :title="a" v-else name="wifi-off"></v-icon>
+          </div>
+          <button id="random-playlist" @click="loadRandomPlaylist({api: $axios})">{{i18n.t('random_playlist')}}</button>
           <select v-model="skin">
             <option
                 v-for="skinName in ['purple', 'green']"
@@ -145,7 +149,8 @@ export default {
   name: 'app',
   data () {
     return {
-      skin: 'green'
+      skin: 'green',
+      online: false
     }
   },
   computed: {
@@ -180,6 +185,8 @@ export default {
   },
   created () {
     this.$eventHub.$on('playlist-move', this.playlistMove)
+    this.$eventHub.$on('network-error', this.networkError)
+    this.$eventHub.$on('network-success', () => { this.online = true })
     this.restoreState()
     try {
       this.playerPause()
@@ -191,10 +198,6 @@ export default {
   },
   methods: {
     ...mapActions('Player', [
-      'loadPlaylist',
-      'loadArtistList',
-      'loadAlbumList',
-      'loadTrackList',
       'loadRandomPlaylist'
     ]),
     ...mapMutations('Player', [
@@ -227,6 +230,93 @@ export default {
       this.addAlbum()
       this.setPlaylistTrack(0)
       this.playerPlay()
+    },
+    networkError () {
+      this.online = false
+    },
+    restoreState () {
+      if(process.env.VUE_APP_TEST > 0) {
+        let list = []
+        for (let i = 1; i < 60; i++) {
+          list.push({
+            id: i,
+            title: Math.random().toString(36).repeat(1 + Math.random() * 2),
+            trackCount: parseInt(Math.random() * 800),
+            genre: {
+              title: [
+                'rock', 'reggae', 'pop', 'indie', 'goa'
+              ][parseInt(Math.random() * 5)]
+            }
+          })
+        }
+        this.$store.commit('Player/setArtistList', list)
+
+        list = []
+        for (let i = 1; i < 60; i++) {
+          list.push({
+            id: i,
+            year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : '',
+            title: Math.random().toString(36).repeat(1 + Math.random() * 3),
+            artist: {
+              id: i,
+              title: Math.random().toString(36).substring(7)
+            },
+            trackCount: parseInt(Math.random() * 30)
+          })
+        }
+        this.$store.commit('Player/setAlbumList', list)
+
+        list = []
+        for (let i = 1; i < 60; i++) {
+          list.push({
+            id: i,
+            title: Math.random().toString(36).repeat(1 + Math.random() * 3),
+            duration: 100 + parseInt(Math.random() * 50),
+            artist: {
+              id: i,
+              title: Math.random().toString(36).repeat(1 + Math.random() * 2)
+            },
+            album: {
+              id: i,
+              title: Math.random().toString(36).repeat(1 + Math.random() * 2),
+              year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
+            }
+          })
+        }
+        this.$store.commit('Player/setTrackList', list)
+
+        list = []
+        for (let i = 1; i < 60; i++) {
+          list.push({
+            id: i,
+            title: Math.random().toString(36).repeat(1 + Math.random() * 2),
+            artist: {
+              id: i,
+              title: Math.random().toString(36).repeat(1 + Math.random() * 2)
+            },
+            album: {
+              id: i,
+              title: Math.random().toString(36).repeat(1 + Math.random() * 2),
+              year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
+            },
+            duration: 100 + parseInt(Math.random() * 50)
+          })
+        }
+        this.$store.commit('Player/setPlaylist', list)
+
+      } else {
+        try {
+          this.$store.dispatch('Player/loadPlaylist', {api: this.$axios})
+          this.$store.dispatch('Player/loadArtistList', {api: this.$axios})
+          this.$store.dispatch('Player/loadTrackList', {api: this.$axios})
+          this.$store.dispatch('Player/loadAlbumList', {api: this.$axios})
+
+          this.$store.commit('Player/setPlaylist', JSON.parse(localStorage.getItem('playlist')))
+          let currentTrack = JSON.parse(localStorage.getItem('currentTrack'))
+          this.setPlaylistTrack(this.playlist.findIndex(i => i.id === currentTrack.id))
+        } catch (e) {
+        }
+      }
     }
   },
   watch: {
@@ -237,20 +327,26 @@ export default {
     },
     currentArtist (v) {
       if (v) {
-        this.loadAlbumList(v && v.id)
+        this.$store.dispatch('Player/loadAlbumList', {api: this.$axios, artistId: v && v.id})
         this.clearCurrentAlbum()
         if (v && v.id) {
-          this.loadTrackList({
-            artistId: v.id
+          this.$store.dispatch('Player/loadTrackList', {
+            api: this.$axios,
+            filter: {
+              artistId: v.id
+            }
           })
         }
       }
     },
     currentAlbum (v) {
       if (v) {
-        this.loadTrackList({
-          artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
-          albumId: v && v.id
+        this.$store.dispatch('Player/loadTrackList', {
+          api: this.$axios,
+          filter: {
+            artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
+            albumId: v && v.id
+          }
         })
       }
     },
@@ -411,6 +507,8 @@ body {
   position: absolute;
   top:20px;
   right:20px;
+  width:100%;
+  text-align: right;
 }
 @media (max-width:768px) {
   #menu-switchers {
@@ -421,5 +519,13 @@ body {
   height:20px;
   float:right;
   cursor:pointer;
+}
+#network-status {
+  display: inline-block;
+  margin:0 10px 0 0 ;
+}
+#network-status .icon {
+  height:20px;
+  color:#fff;
 }
 </style>

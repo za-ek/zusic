@@ -1,3 +1,6 @@
+### Features
+* Network indicator
+
 #### Code improvements 
 * Move test operations to mixin
 * Rearrange files
