@@ -4,8 +4,8 @@ export default {
     currentArtist: null
   },
   actions: {
-    loadArtistList ({ commit }) {
-      this._vm.$axios.get('artists')
+    loadArtistList ({ commit }, { api }) {
+      api.get('artists')
         .then(d => {
           commit('setArtistList', d.data.artists)
         })

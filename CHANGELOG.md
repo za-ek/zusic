@@ -1,5 +1,7 @@
 #### Code improvements 
 * Move test operations to mixin
+* Rearrange files
+* Encapsulated ajax call object
 
 ### Bug fixes
 * Equal height of albums and tracks empty lists

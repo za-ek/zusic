@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import Playlist from './playlist'
-import Artists from './artists'
-import Albums from './albums'
-import Tracks from './tracks'
-import Player from './player'
+import Playlist from './Player/playlist'
+import Artists from './Player/artists'
+import Albums from './Player/albums'
+import Tracks from './Player/tracks'
+import Player from './Player/player'
 
 Vue.use(Vuex)
 

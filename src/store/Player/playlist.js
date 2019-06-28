@@ -8,8 +8,8 @@ export default {
   actions: {
     loadPlaylist ({ commit }) {
     },
-    loadRandomPlaylist ({ commit }) {
-      this._vm.$axios.get('tracks/random')
+    loadRandomPlaylist ({ commit }, {api}) {
+      api.get('tracks/random')
         .then(d => {
           commit('setPlaylist', d.data.tracks)
         })

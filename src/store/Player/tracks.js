@@ -3,10 +3,10 @@ export default {
     tracks: []
   },
   actions: {
-    loadTrackList ({ commit }, filter) {
+    loadTrackList ({ commit }, {api, filter}) {
       filter = filter || {}
       if(('albumId' in filter) && filter.albumId) {
-        this._vm.$axios.get(`albums/${filter.albumId}`)
+        api.get(`albums/${filter.albumId}`)
           .then(d => {
             commit('setTrackList', d.data.tracks)
             commit('mixinTrackAlbums', d.data.albums)

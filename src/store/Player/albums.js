@@ -4,8 +4,8 @@ export default {
     currentAlbum: null
   },
   actions: {
-    loadAlbumList ({ commit }, artistId) {
-      this._vm.$axios.get(
+    loadAlbumList ({ commit }, {api, artistId}) {
+      api.get(
         artistId
           ? `artists/${artistId}/albums`
           : 'albums'
