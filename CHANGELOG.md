@@ -3,6 +3,7 @@
 
 ### Bug fixes
 * Equal height of albums and tracks empty lists
+* Incorrect mixin usage
 
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/za-ek/zusic/tree/0.1.6)
