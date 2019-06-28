@@ -190,6 +190,7 @@ export default {
       display: flex;
       flex-direction: column;
       overflow:hidden;
+      flex:1;
     }
     &--bottom {
       margin-top:20px;
