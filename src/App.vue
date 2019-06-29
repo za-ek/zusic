@@ -97,7 +97,7 @@
       </div>
       <div slot="playlist">
         <PlaylistTrack
-          @click="userPlaying = true"
+          @click.native="userPlaying = true; setPlaylistTrack(key)"
           v-for="(item, key) in playlist"
           :index="key"
           :key="key"
