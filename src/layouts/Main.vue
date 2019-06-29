@@ -1,7 +1,7 @@
 <!--
   _____________
  |_____________|
- |   |     |   |
+ |___|     |   |
  |   |_____|   |
  |   |     |   |
  |___|_____|___|
@@ -50,14 +50,28 @@
         :class="{sidebar: sidebar && sidebarStep === 0}"
         @click="sidebarStep++"
       >
-        <div class="main-layout-content">
-          <div class="list-title">
-            <slot name="artist-title">
-              {{i18n.t('artists')}}
-            </slot>
+        <div id="main-layout--left--top" v-if="false">
+          <div class="main-layout-content">
+            <div class="list-title">
+              <slot name="genres-title">
+                {{i18n.t('genres')}}
+              </slot>
+            </div>
+            <div class="list-content">
+              <slot name="genres-list"></slot>
+            </div>
           </div>
-          <div class="list-content">
-            <slot name="artist-list"></slot>
+        </div>
+        <div id="main-layout--left--bottom">
+          <div class="main-layout-content">
+            <div class="list-title">
+              <slot name="artist-title">
+                {{i18n.t('artists')}}
+              </slot>
+            </div>
+            <div class="list-content">
+              <slot name="artist-list"></slot>
+            </div>
           </div>
         </div>
       </div>
@@ -179,6 +193,14 @@ export default {
 
   &--left {
     width:30%;
+    flex-direction: column;
+    display: flex;
+    &--top {
+      flex:1;
+    }
+    &--bottom {
+      flex:3;
+    }
   }
 
   &--center {

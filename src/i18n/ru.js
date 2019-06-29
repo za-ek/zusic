@@ -1,4 +1,5 @@
 export default {
+  genres: 'Жанры',
   artists: 'Исполнители',
   albums: 'Альбомы',
   tracks: 'Треки',

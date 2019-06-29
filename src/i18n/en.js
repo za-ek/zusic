@@ -1,4 +1,5 @@
 export default {
+  genres: 'Genres',
   artists: 'Artists',
   albums: 'Albums',
   tracks: 'Tracks',

@@ -1,3 +1,6 @@
+### Features
+* Genre list
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/za-ek/zusic/tree/0.1.7)
 ### Features

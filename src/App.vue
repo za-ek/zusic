@@ -19,6 +19,20 @@
           <LanguagePicker></LanguagePicker>
         </div>
       </div>
+      <div slot="genres-list">
+        <div
+                v-for="(genre) in genres"
+                :key="genre.id"
+                class="list-item"
+                @click="setCurrentGenre(genre.id)"
+        >
+          <div class="list-item--title">{{genre.title}}</div>
+          <div class="list-item--sub-info">{{genre.track_count}}</div>
+          <div class="list-item--controls">
+            <v-icon name="list"></v-icon>
+          </div>
+        </div>
+      </div>
       <div slot="artist-list">
         <div
           v-for="(artist) in artists"
@@ -162,6 +176,7 @@ export default {
       currentTrack: state => state.Player.Playlist.currentTrack,
       playlist: state => state.Player.Playlist.playlist,
       currentPlaylistKey: state => state.Player.Playlist.currentTrackN,
+      genres: state => state.Player.Genres.genres,
       artists: state => state.Player.Artists.artists,
       albums: state => state.Player.Albums.albums,
       tracks: state => state.Player.Tracks.tracks,
