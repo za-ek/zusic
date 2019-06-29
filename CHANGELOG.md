@@ -1,10 +1,12 @@
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/za-ek/zusic/tree/0.1.7)
 ### Features
 * Network indicator
 * Dark theme
 * Random playlist button was moved in playlist button group
 * Save current skin
 
-#### Code improvements 
+### Code improvements 
 * Move test operations to mixin
 * Rearrange files
 * Encapsulated ajax call object
