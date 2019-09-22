@@ -161,9 +161,10 @@ export default {
 </script>
 
 <style lang="scss">
+  html, body, #app {margin: 0; height:100%;}
 #main-layout {
   width:100%;
-  height:100vh;
+  height:100%;
   display: flex;
   text-align:left;
   flex-direction: column;
@@ -171,17 +172,18 @@ export default {
   align-items: stretch;
 
   &--top {
-    height:60px;
+    flex: 0 0 60px;
     border-bottom: 1px solid #aaa;
   }
   &--middle {
     width:100%;
-    flex:1;
+    flex:1 1 100%;
     display: flex;
     padding-bottom: 30px;
+    overflow: hidden;
   }
   &--bottom {
-    height:60px;
+    flex:0 0 60px;
     width:100%;
   }
 
@@ -195,6 +197,12 @@ export default {
     width:30%;
     flex-direction: column;
     display: flex;
+    &--bottom, &--top {
+      display: flex;
+      flex-direction: column;
+      overflow:hidden;
+      flex:1;
+    }
     &--top {
       flex:1;
     }
