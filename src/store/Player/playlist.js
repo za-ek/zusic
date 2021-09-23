@@ -56,7 +56,7 @@ export default {
         state.currentTrackN = state.currentTrackN + 1
       }
       state.currentTrack = Object.assign(state.playlist[state.currentTrackN], {
-        url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[state.currentTrackN].id
+        url: (process.env.VUE_APP_BACKEND ?? '') + '/tracks/' + state.playlist[state.currentTrackN].id
       })
     },
     setPlaylist (state, playlist) {
@@ -72,7 +72,7 @@ export default {
         state.currentTrackN--
       } else if (n === state.currentTrackN) {
         state.currentTrack = Object.assign(state.playlist[state.currentTrackN], {
-          url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[state.currentTrackN].id
+          url: (process.env.VUE_APP_BACKEND ?? '') + '/tracks/' + state.playlist[state.currentTrackN].id
         })
       }
     },
@@ -80,7 +80,7 @@ export default {
       if(state.playlist.length > n) {
         state.currentTrackN = n
         state.currentTrack = Object.assign(state.playlist[n], {
-          url: process.env.VUE_APP_BACKEND + '/tracks/' + state.playlist[n].id
+          url: (process.env.VUE_APP_BACKEND ?? '') + '/tracks/' + state.playlist[n].id
         })
       }
     },
