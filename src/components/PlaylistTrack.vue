@@ -25,6 +25,9 @@ export default {
     isCurrent () {
       return this.index === this.currentPlaylistKey
     }
+  },
+  methods: {
+    ...mapMutations('Player', ['removeTrackFromPlaylist'])
   }
 }
 </script>

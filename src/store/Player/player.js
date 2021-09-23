@@ -31,6 +31,10 @@ export default {
       state.player.onplaying = () => {
         state.playing = true
       }
+      state.player.canPlayMP3 = (typeof DOM.canPlayType === "function" && DOM.canPlayType("audio/mpeg;codecs=mp3") !== "");
+      if(!state.player.canPlayMP3) {
+        // request aac
+      }
     },
     playerSetTrack (state, track) {
       state.currentTrack = track
@@ -38,17 +42,24 @@ export default {
       state.loaded = 0
       if (state.player) {
         state.player.pause()
+
+        let canPlayMP3 = navigator.userAgent.toLowerCase().indexOf('firefox') === -1;
+        let codec = 'audio/mpeg';
+        if(!canPlayMP3) {
+          codec = 'audio/aac';
+        }
+
         let source = Array.prototype.find.call(
           state.player.getElementsByTagName('source'),
-            v => v.type === 'audio/mpeg'
+            v => v.type === codec
         )
         if (!source) {
           source = document.createElement('source')
-          source.type = 'audio/mpeg'
+          source.type = codec
           state.player.appendChild(source)
         }
 
-        source.src = state.currentTrack.url
+        source.src = state.currentTrack.url + "?codec=" + codec;
         state.player.load()
         state.player.onprogress = () => {
 
@@ -73,7 +84,20 @@ export default {
         throw new Error('no track')
       }
       if (state.player) {
-        state.player.play()
+        let playPromise = state.player.play()
+
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Automatic playback started!
+            // Show playing UI.
+            console.log('Start :)' + _);
+          })
+              .catch(error => {
+                // Auto-play was prevented
+                // Show paused UI.
+                console.log('Error :(' + error);
+              });
+        }
 
         document.title = [
           (state.currentTrack.artist) ? state.currentTrack.artist.title : this._vm.i18n.t('unknown_artist'),

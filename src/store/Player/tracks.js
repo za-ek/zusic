@@ -9,8 +9,9 @@ export default {
         api.get(`albums/${filter.albumId}`)
           .then(d => {
             commit('setTrackList', d.data.tracks)
-            commit('mixinTrackAlbums', d.data.albums)
-            commit('mixinTrackArtists', d.data.artists)
+            // Now goes in d.data.tracks
+            // commit('mixinTrackAlbums', d.data.albums)
+            // commit('mixinTrackArtists', d.data.artists)
           })
         // @todo
         // commit('setTrackList', list)
