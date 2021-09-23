@@ -1,5 +1,6 @@
 module.exports = {
   presets: [
-    '@vue/app'
+    '@vue/app',
+    'module:metro-react-native-babel-preset'
   ]
 }

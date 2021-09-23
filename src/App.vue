@@ -93,7 +93,7 @@
                 @click="trackToPlaylist(track)"
         >
           <div class="list-item--title">{{track.title}}</div>
-          <div class="list-item--info">{{track.artist.title}} - {{track.album.title}}</div>
+          <div class="list-item--info">{{track.artist}} - {{track.album}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
             <!--
@@ -188,13 +188,13 @@ export default {
       currentTrackDuration: 'playerDuration'
     }),
     currentTrackArtist () {
-      return this.currentTrack && this.currentTrack.artist && this.currentTrack.artist.title
+      return this.currentTrack && this.currentTrack.artist
     },
     currentTrackTitle () {
       return this.currentTrack && this.currentTrack.title
     },
     currentTrackAlbum () {
-      return this.currentTrack && this.currentTrack.album && this.currentTrack.album.title
+      return this.currentTrack && this.currentTrack.album
     },
     currentTrackYear () {
       return this.currentTrack && this.currentTrack.album && this.currentTrack.album.year
