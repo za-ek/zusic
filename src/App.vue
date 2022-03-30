@@ -40,7 +40,7 @@
           class="list-item"
           @click="setCurrentArtist(artist.id)"
         >
-          <div class="list-item--title">{{artist.title}}</div>
+          <div class="list-item--title">{{artist.title || i18n.t('unknown_artist')}}</div>
           <div class="list-item--info">{{artist.genre.title}}</div>
           <div class="list-item--sub-info">{{artist.track_count}}</div>
           <div class="list-item--controls">
@@ -61,7 +61,7 @@
                 class="list-item"
                 @click="setCurrentAlbum(album.id)"
         >
-          <div class="list-item--title">{{album.title}}</div>
+          <div class="list-item--title">{{album.title || i18n.t('unknown_album')}}</div>
           <div class="list-item--info">
             {{album.artist.title}}
             <span v-if="album.year">- {{album.year}}</span>
@@ -396,7 +396,7 @@ export default {
 </script>
 
 <style>
-@import "http://fonts.fontstorage.com/import/bloggersans.css";
+@import "https://st.fontstorage.com/font/import/bloggersans.css";
 </style>
 <style lang="scss">
 @import './assets/skins/purple.scss';
