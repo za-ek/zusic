@@ -145,6 +145,9 @@
             </span>
           </div>
         </div>
+        <div id="controls-right">
+          <div id="volume"></div>
+        </div>
       </div>
     </Layout>
     <div>
@@ -213,6 +216,34 @@ export default {
   },
   mounted () {
     this.setAudioDOM(this.$refs.player)
+    const volume = document.getElementById('volume');
+    const MAX = 30;
+
+    volume.onclick = (e) => {
+      let v = (e.clientX - volume.offsetLeft) / 145
+      this.$refs.player.volume = v;
+      for(let i = 0; i <= MAX; i++) {
+        if((i / MAX) < v) {
+          volume.childNodes[i].className = 'fill';
+        } else {
+          volume.childNodes[i].className = '';
+        }
+      }
+    };
+    volume.onmousemove = (e) => {
+      if(e.which === 1) {
+        volume.onclick(e);
+      }
+    };
+    const maxHeight = 35;
+    for(let i = 0; i <= MAX; i++) {
+      let div = document.createElement('div');
+      div.style.marginTop=((51 - maxHeight) + maxHeight * (MAX - i) / MAX) + 'px';
+      div.style.height=(maxHeight * i / MAX) + 'px';
+      div.style.left=(145 * i / MAX) + 'px';
+      div.className = 'fill';
+      volume.appendChild(div);
+    }
   },
   methods: {
     ...mapActions('Player', [
@@ -439,6 +470,24 @@ body {
 }
 #controls svg {
   cursor:pointer;
+}
+
+#controls-right {
+  height: 51px;
+}
+#volume {
+  width:145px;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+  height: 51px;
+}
+#volume > div {
+  position:absolute;
+  width:5px;
+  float:left;
+  border:1px solid #666;
+  &.fill {background-color: #09ed00;}
 }
 
 #play-line-backward {
