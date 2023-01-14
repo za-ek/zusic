@@ -11,5 +11,8 @@ export default {
   browser_no_support: 'Данный браузер не поддерживает audio HTML',
 
   random_playlist: 'Сгенерировать плейлист',
-  all_apologies: 'Простите, это пока не работает'
+  all_apologies: 'Простите, это пока не работает',
+
+  artists_alphabet: 'А-Я',
+  recent_artists: 'Недавно добавленные',
 }

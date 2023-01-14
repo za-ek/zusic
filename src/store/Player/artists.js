@@ -1,19 +1,21 @@
 export default {
   state: {
     artists: [],
+    recent: [],
     currentArtist: null
   },
   actions: {
     loadArtistList ({ commit }, { api }) {
       api.get('artists')
         .then(d => {
-          commit('setArtistList', d.data.artists)
+          commit('setArtistList', d.data)
         })
     }
   },
   mutations: {
     setArtistList (state, list) {
-      state.artists = list
+      state.artists = list.artists
+      state.recent = list.recent
     },
     setCurrentArtist (state, artistId) {
       state.currentArtist = state.artists.find(item => item.id === artistId)

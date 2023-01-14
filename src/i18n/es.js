@@ -11,5 +11,8 @@ export default {
   browser_no_support: 'Este navegador no tiene soporte para audio HTML.',
 
   random_playlist: 'Lista aleatória',
-  all_apologies: 'Disculpen las molestias. Esto no funciona aun'
+  all_apologies: 'Disculpen las molestias. Esto no funciona aun',
+
+  artists_alphabet: 'A-Z',
+  recent_artists: 'Recientemente añadido',
 }

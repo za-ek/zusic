@@ -19,5 +19,8 @@ export default {
   ru: 'Russian',
 
   random_playlist: 'Random playlist',
-  all_apologies: 'All apologies this is doesn\'t work'
+  all_apologies: 'All apologies this is doesn\'t work',
+
+  artists_alphabet: 'A-Z',
+  recent_artists: 'Recently added',
 }

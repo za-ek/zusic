@@ -170,6 +170,7 @@ export default {
   flex-direction: column;
   align-content: stretch;
   align-items: stretch;
+  box-sizing: content-box;
 
   &--top {
     flex: 0 0 60px;

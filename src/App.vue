@@ -34,6 +34,21 @@
         </div>
       </div>
       <div slot="artist-list">
+        <div class="list-item list-header"><div class="list-item--title">{{i18n.t('recent_artists')}}</div></div>
+        <div
+            v-for="(artist) in artists.filter(a => artists_recent.indexOf(a.id) > -1)"
+            :key="'recent-'+artist.id"
+            class="list-item"
+            @click="setCurrentArtist(artist.id)"
+        >
+          <div class="list-item--title">{{artist.title || i18n.t('unknown_artist')}}</div>
+          <div class="list-item--info">{{artist.genre.title}}</div>
+          <div class="list-item--sub-info">{{artist.track_count}}</div>
+          <div class="list-item--controls">
+            <v-icon name="list"></v-icon>
+          </div>
+        </div>
+        <div class="list-item list-header"><div class="list-item--title">{{i18n.t('artists_alphabet')}}</div></div>
         <div
           v-for="(artist) in artists"
           :key="artist.id"
@@ -119,37 +134,37 @@
           :class="{'list-item': true, 'playlist-item': true, 'current': currentPlaylistKey === key}"
         />
       </div>
-      <div slot="play-line" style="width: 100%;border-top:1px solid #999;display: flex">
-        <Timeline/>
-        <div id="controls">
-          <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
-          <v-icon @click.native="playerPlay(); userPlaying = true" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
-          <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
-          <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
+    </Layout>
+    <div slot="play-line" id="bottom-block" style="width: 100%;border-top:1px solid #999;display: flex">
+      <Timeline/>
+      <div id="controls">
+        <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
+        <v-icon @click.native="playerPlay(); userPlaying = true" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
+        <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
+        <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
+      </div>
+      <div id="now-time">
+        <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
+        {{formatTrackTime(currentTrackDuration)}}
+      </div>
+      <div id="now-playing">
+        <div id="now-playing--song">
+          {{currentTrackTitle || i18n.t('unknown_track')}}
         </div>
-        <div id="now-time">
-          <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
-          {{formatTrackTime(currentTrackDuration)}}
-        </div>
-        <div id="now-playing">
-          <div id="now-playing--song">
-            {{currentTrackTitle || i18n.t('unknown_track')}}
-          </div>
-          <div id="now-playing--artist">
-            {{currentTrackArtist || i18n.t('unknown_artist')}}
-            <span v-if="currentTrackAlbum">
+        <div id="now-playing--artist">
+          {{currentTrackArtist || i18n.t('unknown_artist')}}
+          <span v-if="currentTrackAlbum">
               - {{currentTrackAlbum}}
             </span>
-            <span v-if="currentTrackYear">
+          <span v-if="currentTrackYear">
               - {{currentTrackYear}}
             </span>
-          </div>
-        </div>
-        <div id="controls-right">
-          <div id="volume"></div>
         </div>
       </div>
-    </Layout>
+      <div id="controls-right">
+        <div id="volume"></div>
+      </div>
+    </div>
     <div>
       <audio preload="auto" ref="player">{{i18n.t('browser_no_support')}}</audio>
     </div>
@@ -181,6 +196,7 @@ export default {
       currentPlaylistKey: state => state.Player.Playlist.currentTrackN,
       genres: state => state.Player.Genres.genres,
       artists: state => state.Player.Artists.artists,
+      artists_recent: state => state.Player.Artists.recent,
       albums: state => state.Player.Albums.albums,
       tracks: state => state.Player.Tracks.tracks,
       playing: state => state.Player.Player.playing,
@@ -299,7 +315,7 @@ export default {
             }
           })
         }
-        this.$store.commit('Player/setArtistList', list)
+        this.$store.commit('Player/setArtistList', {artists: list, recent: [1,2,3,4,5,6,7,8,9]})
 
         list = []
         for (let i = 1; i < 60; i++) {
@@ -459,6 +475,7 @@ body {
   font-weight: bold;
 }
 #now-playing--artist {
+  height:1em;
 }
 
 #controls {
@@ -519,6 +536,9 @@ body {
 .list-title {
   font-size:20px;
   padding:15px;
+  font-weight: bold;
+}
+.list-header {
   font-weight: bold;
 }
 .list-item {
@@ -602,5 +622,9 @@ body {
 #network-status .icon {
   height:20px;
   color:#fff;
+}
+#bottom-block {
+  position: fixed;
+  bottom:0;
 }
 </style>

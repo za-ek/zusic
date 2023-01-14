@@ -79,10 +79,10 @@ export default {
       }
     },
     playerPlay (state) {
-      state.trackEnd = false
       if (!state.currentTrack) {
         throw new Error('no track')
       }
+      state.trackEnd = false
       if (state.player) {
         let playPromise = state.player.play()
 
