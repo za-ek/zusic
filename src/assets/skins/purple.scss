@@ -42,12 +42,16 @@ $control: #fff;
       background-color: $color;
     }
   }
+  #bottom-block {
+    background-color: #fff;
+  }
 
   #main-layout {
     > * {
       background-color:rgba(0,0,0,0.4);
     }
-    background: url('https://www.ubackground.com/_ph/86/849751921.jpg');
+    background: url('assets/purple-bg.jpg');
+    background-size: 100% 100%;
 
     .list {
       &-title {
