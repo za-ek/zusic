@@ -455,7 +455,6 @@ body {
   padding:0;
   height:100vh;
   font-family: 'Blogger Sans';
-  background-color: #f00;
 }
 
 #now-time {
@@ -632,6 +631,5 @@ body {
   height:59px;
   border-top:1px solid #999;
   display: flex;
-  background-color:aqua;
 }
 </style>
