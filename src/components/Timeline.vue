@@ -49,7 +49,7 @@ export default {
 #timeline {
   height:8px;
   width:100%;
-  position:absolute;
+  position:fixed;
   z-index:5;
 
   &--loaded {

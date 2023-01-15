@@ -135,7 +135,7 @@
         />
       </div>
     </Layout>
-    <div slot="play-line" id="bottom-block" style="width: 100%;border-top:1px solid #999;display: flex">
+    <div slot="play-line" id="bottom-block">
       <Timeline/>
       <div id="controls">
         <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
@@ -455,6 +455,7 @@ body {
   padding:0;
   height:100vh;
   font-family: 'Blogger Sans';
+  background-color: #f00;
 }
 
 #now-time {
@@ -476,6 +477,7 @@ body {
 }
 #now-playing--artist {
   height:1em;
+  overflow: hidden;
 }
 
 #controls {
@@ -626,5 +628,10 @@ body {
 #bottom-block {
   position: fixed;
   bottom:0;
+  width: 100%;
+  height:59px;
+  border-top:1px solid #999;
+  display: flex;
+  background-color:aqua;
 }
 </style>
