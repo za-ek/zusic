@@ -295,7 +295,9 @@ export default {
     },
     previewTrack(track) {
       this.playerSetTrack(track)
-      this.playerPlay()
+      if(this.userPlaying) {
+        this.playerPlay()
+      }
     },
     addAlbum () {
       this.tracks.forEach(v => this.addTrackToPlaylist(v))
