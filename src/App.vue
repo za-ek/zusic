@@ -104,10 +104,12 @@
         <div
                 v-for="(track) in tracks"
                 :key="track.id"
-                class="list-item"
+                :class="{'list-item': true,'preview' : currentPreview === track.id}"
                 @click="trackToPlaylist(track)"
         >
-          <div @click.stop="previewTrack(track)" class="list-item--pre">&cir;</div>
+          <div @click.stop="previewTrack(track)" class="list-item--pre">{{
+              currentPreview === track.id ? "●" : "&cir;"
+            }}</div>
           <div class="list-item--title">{{track.title}}</div>
           <div class="list-item--info">{{track.artist}} - {{track.album}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
@@ -188,6 +190,7 @@ export default {
       skin: 'purple',
       online: false,
       userPlaying: false,
+      currentPreview: -1,
       history: [],
       historyIndex: -1
     }
@@ -294,9 +297,14 @@ export default {
       this.addTrackToPlaylist(track)
     },
     previewTrack(track) {
-      this.playerSetTrack(track)
-      if(this.userPlaying) {
-        this.playerPlay()
+      if(this.currentPreview === track.id) {
+        this.currentPreview = -1;
+      } else {
+        this.currentPreview = track.id
+        this.playerSetTrack(track)
+        if (this.userPlaying) {
+          setTimeout(() => this.playerPlay(), 0);
+        }
       }
     },
     addAlbum () {
@@ -444,6 +452,7 @@ export default {
       }
     },
     currentTrack (v) {
+      this.currentPreview = -1;
       this.playerSetTrack(v)
       if(this.userPlaying) {
         this.playerPlay()
@@ -574,6 +583,9 @@ body {
 }
 .list-item .list-item--pre {
   padding-left:15px;
+}
+.list-item.preview {
+  background-color: #dedede;
 }
 .list-item:hover .list-item--title {
   text-decoration: none;
