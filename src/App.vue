@@ -107,7 +107,7 @@
                 :class="{'list-item': true,'preview' : currentPreview === track.id}"
                 @click="trackToPlaylist(track)"
         >
-          <div @click.stop="previewTrack(track)" class="list-item--pre">{{
+          <div @click.stop="userPlaying = true; previewTrack(track)" class="list-item--pre">{{
               currentPreview === track.id ? "●" : "&cir;"
             }}</div>
           <div class="list-item--title">{{track.title}}</div>
@@ -131,7 +131,7 @@
       </div>
       <div slot="playlist">
         <PlaylistTrack
-          @click.native="userPlaying = true; setPlaylistTrack(key)"
+          @click.native="userPlaying = true; currentPreview = -1; setPlaylistTrack(key)"
           v-for="(item, key) in playlist"
           :index="key"
           :key="key"
@@ -286,6 +286,7 @@ export default {
       'setCurrentAlbum',
       'clearCurrentAlbum',
       'removeTrackFromPlaylist',
+      'setRawTrack',
       'setPlaylistTrack',
       'playerPlay',
       'playerPause',
@@ -301,10 +302,9 @@ export default {
         this.currentPreview = -1;
       } else {
         this.currentPreview = track.id
+        this.setRawTrack(track)
         this.playerSetTrack(track)
-        if (this.userPlaying) {
-          setTimeout(() => this.playerPlay(), 0);
-        }
+        this.playerPlay();
       }
     },
     addAlbum () {
@@ -452,7 +452,6 @@ export default {
       }
     },
     currentTrack (v) {
-      this.currentPreview = -1;
       this.playerSetTrack(v)
       if(this.userPlaying) {
         this.playerPlay()

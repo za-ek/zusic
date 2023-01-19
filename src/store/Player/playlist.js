@@ -93,6 +93,9 @@ export default {
       } else if (state.currentTrackN > changes.n && state.currentTrackN <= changes.m) {
         state.currentTrackN--
       }
+    },
+    setRawTrack(state, track) {
+      state.currentTrack = track;
     }
   }
 }
