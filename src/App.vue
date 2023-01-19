@@ -304,7 +304,6 @@ export default {
         this.currentPreview = track.id
         this.setRawTrack(track)
         this.playerSetTrack(track)
-        this.playerPlay();
       }
     },
     addAlbum () {
