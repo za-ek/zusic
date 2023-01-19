@@ -107,6 +107,7 @@
                 class="list-item"
                 @click="trackToPlaylist(track)"
         >
+          <div @click.stop="previewTrack(track)" class="list-item--pre">&cir;</div>
           <div class="list-item--title">{{track.title}}</div>
           <div class="list-item--info">{{track.artist}} - {{track.album}}</div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
@@ -120,9 +121,11 @@
       </div>
       <div slot="list-title">
         {{i18n.t('playlist')}}
-        <v-icon name="x" @click.native="setPlaylist([])" class="group-control"></v-icon>
+        <v-icon name="x" @click.native="clearPlaylist" class="group-control"></v-icon>
         <v-icon name="hash" @click.native="loadRandomPlaylist({api: $axios})" class="group-control"></v-icon>
         <v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon>
+        <v-icon name="corner-right-down" @click.native="redoPlaylist" class="group-control"></v-icon>
+        <v-icon name="corner-left-down" @click.native="undoPlaylist" class="group-control"></v-icon>
       </div>
       <div slot="playlist">
         <PlaylistTrack
@@ -184,7 +187,9 @@ export default {
     return {
       skin: 'purple',
       online: false,
-      userPlaying: false
+      userPlaying: false,
+      history: [],
+      historyIndex: -1
     }
   },
   computed: {
@@ -234,6 +239,7 @@ export default {
     this.setAudioDOM(this.$refs.player)
     const volume = document.getElementById('volume');
     const MAX = 30;
+    this.commitHistory();
 
     volume.onclick = (e) => {
       let v = (e.clientX - volume.offsetLeft) / 145
@@ -287,8 +293,31 @@ export default {
     trackToPlaylist (track) {
       this.addTrackToPlaylist(track)
     },
+    previewTrack(track) {
+      this.playerSetTrack(track)
+      this.playerPlay()
+    },
     addAlbum () {
-      this.tracks.forEach(v => this.trackToPlaylist(v))
+      this.tracks.forEach(v => this.addTrackToPlaylist(v))
+      this.commitHistory();
+    },
+    commitHistory() {
+      this.history.push(this.playlist);
+      this.historyIndex = this.history.length - 1;
+    },
+    undoPlaylist() {
+      if(this.historyIndex <= 0) return;
+      --this.historyIndex;
+      this.setPlaylist(this.history[this.historyIndex])
+    },
+    redoPlaylist() {
+      if(this.historyIndex >= this.history.length - 1) return;
+      ++this.historyIndex;
+      this.setPlaylist(this.history[this.historyIndex])
+    },
+    clearPlaylist() {
+      this.setPlaylist([]);
+      this.commitHistory();
     },
     playAlbum () {
       this.setPlaylist([])
@@ -338,15 +367,8 @@ export default {
             id: i,
             title: Math.random().toString(36).repeat(1 + Math.random() * 3),
             duration: 100 + parseInt(Math.random() * 50),
-            artist: {
-              id: i,
-              title: Math.random().toString(36).repeat(1 + Math.random() * 2)
-            },
-            album: {
-              id: i,
-              title: Math.random().toString(36).repeat(1 + Math.random() * 2),
-              year: (parseInt(Math.random() * 100) % 2 === 0) ? 2019 - parseInt(Math.random() * 50) : ''
-            }
+            artist: Math.random().toString(36).repeat(1 + Math.random() * 2),
+            album: Math.random().toString(36).repeat(1 + Math.random() * 2)
           })
         }
         this.$store.commit('Player/setTrackList', list)
