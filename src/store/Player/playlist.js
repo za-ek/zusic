@@ -95,7 +95,9 @@ export default {
       }
     },
     setRawTrack(state, track) {
-      state.currentTrack = track;
+      state.currentTrack = Object.assign(track, {
+        url: (process.env.VUE_APP_BACKEND ?? '') + '/tracks/' + track.id
+      });
     }
   }
 }
