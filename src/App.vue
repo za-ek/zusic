@@ -39,7 +39,7 @@
             v-for="(artist) in artists.filter(a => artists_recent.indexOf(a.id) > -1)"
             :key="'recent-'+artist.id"
             class="list-item"
-            @click="setCurrentArtist(artist.id)"
+            @click="setArtist(artist.id)"
         >
           <div class="list-item--title">{{artist.title || i18n.t('unknown_artist')}}</div>
           <div class="list-item--info">{{artist.genre.title}}</div>
