@@ -434,10 +434,10 @@ export default {
       localStorage.setItem('album_id', id);
       this.setCurrentAlbum(id)
     },
-    setArtist(id) {
-      this.setCurrentArtist(id)
-      localStorage.setItem('artist_id', id);
-      this.$store.dispatch('Player/loadAlbumList', {api: this.$axios})
+    setArtist(artistId) {
+      this.setCurrentArtist(artistId)
+      localStorage.setItem('artist_id', artistId);
+      this.$store.dispatch('Player/loadAlbumList', {api: this.$axios, artistId})
     }
   },
   watch: {
