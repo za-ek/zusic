@@ -269,12 +269,6 @@ export default {
       div.className = 'fill';
       volume.appendChild(div);
     }
-    if(localStorage.getItem('artist_id')) {
-      this.setCurrentArtist(localStorage.getItem('artist_id'));
-    }
-    if(localStorage.getItem('album_id')) {
-      this.setCurrentAlbum(localStorage.getItem('album_id'));
-    }
   },
   methods: {
     ...mapActions('Player', [
@@ -414,6 +408,12 @@ export default {
 
       } else {
         try {
+          if(localStorage.getItem('artist_id')) {
+            this.setCurrentArtist(localStorage.getItem('artist_id'));
+          }
+          if(localStorage.getItem('album_id')) {
+            this.setCurrentAlbum(localStorage.getItem('album_id'));
+          }
           this.$store.dispatch('Player/loadPlaylist', {api: this.$axios})
           this.$store.dispatch('Player/loadArtistList', {api: this.$axios})
           this.$store.dispatch('Player/loadTrackList', {api: this.$axios})
