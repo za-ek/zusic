@@ -111,7 +111,11 @@
               currentPreview === track.id ? "●" : "&cir;"
             }}</div>
           <div class="list-item--title">{{track.title}}</div>
-          <div class="list-item--info">{{track.artist}} - {{track.album}}</div>
+          <div class="list-item--info">
+            <a @click.stop="setCurrentArtist(track.artistId)" href="#">{{track.artist}}</a>
+            -
+            <a @click.stop="setCurrentAlbum(track.albumId)" href="#">{{track.album}}</a>
+          </div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
             <!--
@@ -625,6 +629,12 @@ body {
   white-space: nowrap;
   padding-left:5px;
   line-height:19px;
+}
+.list-item--info a {
+  color:inherit;
+}
+.list-item--info a:hover {
+  text-decoration: none;
 }
 .list-item--sub-info {
   align-self: flex-end;
