@@ -320,7 +320,7 @@ export default {
       this.commitHistory();
     },
     commitHistory() {
-      this.history.push(this.playlist);
+      this.history.push([...this.playlist]);
       this.historyIndex = this.history.length - 1;
     },
     undoPlaylist() {
