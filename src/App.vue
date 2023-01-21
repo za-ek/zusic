@@ -435,9 +435,9 @@ export default {
       this.setCurrentAlbum(id)
     },
     setArtist(id) {
-      console.log('set artist', id);
       this.setCurrentArtist(id)
       localStorage.setItem('artist_id', id);
+      this.$store.dispatch('Player/loadAlbumList', {api: this.$axios})
     }
   },
   watch: {
