@@ -9,7 +9,7 @@ export default {
     loadPlaylist ({ commit }) {
     },
     loadRandomPlaylist ({ commit }, {api}) {
-      api.get('tracks/random')
+      return api.get('tracks/random')
         .then(d => {
           commit('setPlaylist', d.data.tracks)
         })

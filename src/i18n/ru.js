@@ -8,6 +8,12 @@ export default {
   unknown_album: 'Неизвестный альбом',
   unknown_track: 'Неизвестный трек',
 
+  clear: 'Очистить',
+  order_number: 'Отсортировать',
+  shuffle: 'Перемешать',
+  undo: 'Отменить',
+  redo: 'Вернуть',
+
   browser_no_support: 'Данный браузер не поддерживает audio HTML',
 
   random_playlist: 'Сгенерировать плейлист',
@@ -15,4 +21,8 @@ export default {
 
   artists_alphabet: 'А-Я',
   recent_artists: 'Недавно добавленные',
+
+  skin_purple: 'Фиолетовый',
+  skin_green: 'Зелёный',
+  skin_dark: 'Тёмный',
 }

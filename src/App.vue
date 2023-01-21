@@ -74,7 +74,7 @@
                 v-for="(album) in albums"
                 :key="album.id"
                 class="list-item"
-                @click="setCurrentAlbum(album.id)"
+                @click="setAlbum(album.id)"
         >
           <div class="list-item--title">{{album.title || i18n.t('unknown_album')}}</div>
           <div class="list-item--info">
@@ -123,11 +123,11 @@
       </div>
       <div slot="list-title">
         {{i18n.t('playlist')}}
-        <v-icon name="x" @click.native="clearPlaylist" class="group-control"></v-icon>
-        <v-icon name="hash" @click.native="loadRandomPlaylist({api: $axios})" class="group-control"></v-icon>
-        <v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon>
-        <v-icon name="corner-right-down" @click.native="redoPlaylist" class="group-control"></v-icon>
-        <v-icon name="corner-left-down" @click.native="undoPlaylist" class="group-control"></v-icon>
+        <span :title="i18n.t('clear')"><v-icon name="x" @click.native="clearPlaylist" class="group-control"></v-icon></span>
+        <span :title="i18n.t('shuffle')"><v-icon name="shuffle" @click.native="shufflePlaylist" class="group-control"></v-icon></span>
+        <span :title="i18n.t('random_playlist')"><v-icon name="box" @click.native="randomPlaylist" class="group-control"></v-icon></span>
+        <span :title="i18n.t('redo')"><v-icon name="corner-right-down" @click.native="redoPlaylist" class="group-control"></v-icon></span>
+        <span :title="i18n.t('undo')"><v-icon name="corner-left-down" @click.native="undoPlaylist" class="group-control"></v-icon></span>
       </div>
       <div slot="playlist">
         <PlaylistTrack
@@ -269,6 +269,12 @@ export default {
       div.className = 'fill';
       volume.appendChild(div);
     }
+    if(localStorage.getItem('artist_id')) {
+      this.setCurrentArtist(localStorage.getItem('artist_id'));
+    }
+    if(localStorage.getItem('album_id')) {
+      this.setCurrentAlbum(localStorage.getItem('album_id'));
+    }
   },
   methods: {
     ...mapActions('Player', [
@@ -294,6 +300,12 @@ export default {
       'setPlaylist',
       'playlistNext'
     ]),
+    randomPlaylist() {
+      this.loadRandomPlaylist()
+          .then(() => {
+            this.commitHistory()
+          })
+    },
     trackToPlaylist (track) {
       this.addTrackToPlaylist(track)
     },
@@ -413,6 +425,14 @@ export default {
         } catch (e) {
         }
       }
+    },
+    setAlbum(id) {
+      this.setCurrentAlbum(id)
+      localStorage.setItem('album_id', id);
+    },
+    setArtist(id) {
+      this.setCurrentArtist(id)
+      localStorage.setItem('artist_id', id);
     }
   },
   watch: {

@@ -8,6 +8,12 @@ export default {
   unknown_album: 'Unknown album',
   unknown_track: 'Unknown track',
 
+  clear: 'Clear',
+  order_number: 'Sort',
+  shuffle: 'Shuffle',
+  undo: 'Undo',
+  redo: 'Redo',
+
   skin_green: 'Green',
   skin_purple: 'Purple',
   skin_dark: 'Dark',

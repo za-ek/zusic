@@ -1,29 +1,30 @@
 <template>
-  <select v-model="i18n.locale">
-    <option
-            :value="lang"
-            v-for="(lang) in languageList"
-            :key="lang"
-    >
-      {{localeNames ? i18n.t(lang) : nativeName[lang]}}
-    </option>
+  <select @change="update">
+    <option v-for="key in Object.keys(languages)" :key="key" :value="key" :selected="key === selected">{{languages[key]}}</option>
   </select>
 </template>
 
 <script>
 export default {
-  data () {
+  computed: {
+    selected() {
+      return this.i18n.locale
+    }
+  },
+  data() {
     return {
-      languageList: [
-        'en', 'es', 'ru'
-      ],
-      nativeName: {
+      languages: {
         en: 'English',
         es: 'Español',
-        ru: 'Русский'
+        ru: 'Русский',
       }
     }
   },
-  props: ['localeNames']
+  methods: {
+    update(e) {
+      this.i18n.locale = e.target.value;
+      localStorage.setItem('locale', e.target.value);
+    }
+  }
 }
 </script>
