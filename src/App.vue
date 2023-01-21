@@ -413,7 +413,10 @@ export default {
           }
           this.$store.dispatch('Player/loadPlaylist', {api: this.$axios})
           this.$store.dispatch('Player/loadArtistList', {api: this.$axios})
-          this.$store.dispatch('Player/loadTrackList', {api: this.$axios, albumId: localStorage.getItem('album_id')})
+          this.$store.dispatch('Player/loadTrackList', {
+            api: this.$axios,
+            filter: {albumId: localStorage.getItem('album_id')}
+          });
           this.$store.dispatch('Player/loadAlbumList', {api: this.$axios})
 
           this.$store.commit('Player/setPlaylist', JSON.parse(localStorage.getItem('playlist')))
