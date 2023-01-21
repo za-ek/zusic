@@ -112,9 +112,9 @@
             }}</div>
           <div class="list-item--title">{{track.title}}</div>
           <div class="list-item--info">
-            <a @click.stop="setCurrentArtist(track.artistId)" href="#">{{track.artist}}</a>
+            <a @click.stop="setCurrentArtist(track.artist_id)" href="#">{{track.artist}}</a>
             -
-            <a @click.stop="setCurrentAlbum(track.albumId)" href="#">{{track.album}}</a>
+            <a @click.stop="setCurrentAlbum(track.album_id)" href="#">{{track.album}}</a>
           </div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
