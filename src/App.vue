@@ -112,9 +112,9 @@
             }}</div>
           <div class="list-item--title">{{track.title}}</div>
           <div class="list-item--info">
-            <a @click.stop="setCurrentArtist(track.artist_id)" href="#">{{track.artist}}</a>
+            <a @click.stop="setArtist(track.artist_id)" href="#">{{track.artist}}</a>
             -
-            <a @click.stop="setCurrentAlbum(track.album_id)" href="#">{{track.album}}</a>
+            <a @click.stop="setAlbum(track.album_id)" href="#">{{track.album}}</a>
           </div>
           <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
           <div class="list-item--controls">
@@ -435,6 +435,7 @@ export default {
       this.setCurrentAlbum(id)
     },
     setArtist(id) {
+      console.log('set artist', id);
       this.setCurrentArtist(id)
       localStorage.setItem('artist_id', id);
     }
