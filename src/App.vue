@@ -411,12 +411,9 @@ export default {
           if(localStorage.getItem('artist_id')) {
             this.setCurrentArtist(localStorage.getItem('artist_id'));
           }
-          if(localStorage.getItem('album_id')) {
-            this.setCurrentAlbum(localStorage.getItem('album_id'));
-          }
           this.$store.dispatch('Player/loadPlaylist', {api: this.$axios})
           this.$store.dispatch('Player/loadArtistList', {api: this.$axios})
-          this.$store.dispatch('Player/loadTrackList', {api: this.$axios})
+          this.$store.dispatch('Player/loadTrackList', {api: this.$axios, albumId: localStorage.getItem('album_id')})
           this.$store.dispatch('Player/loadAlbumList', {api: this.$axios})
 
           this.$store.commit('Player/setPlaylist', JSON.parse(localStorage.getItem('playlist')))
@@ -427,8 +424,8 @@ export default {
       }
     },
     setAlbum(id) {
-      this.setCurrentAlbum(id)
       localStorage.setItem('album_id', id);
+      this.setCurrentAlbum(id)
     },
     setArtist(id) {
       this.setCurrentArtist(id)
