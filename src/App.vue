@@ -301,7 +301,7 @@ export default {
       'playlistNext'
     ]),
     randomPlaylist() {
-      this.loadRandomPlaylist()
+      this.$store.dispatch('Player/loadRandomPlaylist', {api: this.$axios})
           .then(() => {
             this.commitHistory()
           })
