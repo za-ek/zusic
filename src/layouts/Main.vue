@@ -29,7 +29,7 @@
                 v-else
                 name="align-justify"
                 id="open-sidebar"
-                @click.native="() => {sidebar = !sidebar; sidebarStep = 0}"
+                @click.native="() => {sidebar = !sidebar; }"
         ></v-icon>
       </slot>
       <slot name="menu-wrapper">
