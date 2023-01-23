@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div slot="artist-list">
+      <div slot="artist-list" v-if="!showSearch">
         <div class="list-item list-header"><div class="list-item--title">{{i18n.t('recent_artists')}}</div></div>
         <div
             v-for="(artist) in artists.filter(a => artists_recent.indexOf(a.id) > -1)"
@@ -68,6 +68,70 @@
         <span v-if="currentArtist" @click="clearCurrentArtist">
           - {{currentArtist.title}}
         </span>
+      </div>
+      <div slot="artist-title" v-if="!showSearch">
+        {{i18n.t('artists')}}
+        <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
+      </div>
+      <div slot="artist-title" v-else>
+        <input type="text" v-model="searchInput">
+        <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
+        <v-icon name="x" @click.native="closeSearch" class="group-control"></v-icon>
+      </div>
+      <div v-if="showSearch" slot="search-artists">
+        <div
+            v-for="(artist) in searchResults.artists"
+            :key="artist.id"
+            class="list-item"
+            @click="setArtist(artist.id)"
+        >
+          <div class="list-item--title">{{artist.title || i18n.t('unknown_artist')}}</div>
+          <div class="list-item--info">{{artist.genre.title}}</div>
+          <div class="list-item--sub-info">{{artist.track_count}}</div>
+          <div class="list-item--controls">
+            <v-icon name="list"></v-icon>
+          </div>
+        </div>
+      </div>
+      <div v-if="showSearch" slot="search-albums">
+        <div
+            v-for="(album) in searchResults.albums"
+            :key="album.id"
+            class="list-item"
+            @click="setAlbum(album.id)"
+        >
+          <div class="list-item--title">{{album.title || i18n.t('unknown_album')}}</div>
+          <div class="list-item--info">{{album.year}}</div>
+          <div class="list-item--sub-info">{{album.track_count}}</div>
+          <div class="list-item--controls">
+            <v-icon name="list"></v-icon>
+          </div>
+        </div>
+      </div>
+      <div v-if="showSearch" slot="search-tracks">
+        <div
+            v-for="(track) in searchResults.tracks"
+            :key="track.id"
+            class="list-item"
+            @click.stop="addTrackToPlaylist(track)"
+        >
+          <div @click.stop="userPlaying = true; previewTrack(track)" class="list-item--pre">{{
+              currentPreview === track.id ? "●" : "&cir;"
+            }}</div>
+          <div class="list-item--title">{{track.title}}</div>
+          <div class="list-item--info">
+            <a @click.stop="setArtist(track.artist_id)" href="#">{{track.artist}}</a>
+            -
+            <a @click.stop="setAlbum(track.album_id)" href="#">{{track.album}}</a>
+          </div>
+          <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
+          <div class="list-item--controls">
+            <!--
+            <v-icon name="play" class="filled"></v-icon>
+            <v-icon name="plus"></v-icon>
+            -->
+          </div>
+        </div>
       </div>
       <div slot="albums-list">
         <div
@@ -145,33 +209,35 @@
       </div>
     </Layout>
     <div slot="play-line" id="bottom-block">
-      <Timeline/>
-      <div id="controls">
-        <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
-        <v-icon @click.native="playerPlay(); userPlaying = true" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
-        <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
-        <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
-      </div>
-      <div id="now-time">
-        <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
-        {{formatTrackTime(currentTrackDuration)}}
-      </div>
-      <div id="now-playing">
-        <div id="now-playing--song">
-          {{currentTrackTitle || i18n.t('unknown_track')}}
+      <div>
+        <Timeline/>
+        <div id="controls">
+          <v-icon @click.native="playlistPrevious" name="skip-back" id="play-line-backward"></v-icon>
+          <v-icon @click.native="playerPlay(); userPlaying = true" v-if="!playing" name="play-circle" id="play-line-play"></v-icon>
+          <v-icon @click.native="playerPause" v-else name="pause-circle" id="play-line-pause"></v-icon>
+          <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
         </div>
-        <div id="now-playing--artist">
-          {{currentTrackArtist || i18n.t('unknown_artist')}}
-          <span v-if="currentTrackAlbum">
+        <div id="now-time">
+          <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
+          {{formatTrackTime(currentTrackDuration)}}
+        </div>
+        <div id="now-playing">
+          <div id="now-playing--song">
+            {{currentTrackTitle || i18n.t('unknown_track')}}
+          </div>
+          <div id="now-playing--artist">
+            {{currentTrackArtist || i18n.t('unknown_artist')}}
+            <span v-if="currentTrackAlbum">
               - {{currentTrackAlbum}}
             </span>
-          <span v-if="currentTrackYear">
+            <span v-if="currentTrackYear">
               - {{currentTrackYear}}
             </span>
+          </div>
         </div>
-      </div>
-      <div id="controls-right">
-        <div id="volume"></div>
+        <div id="controls-right">
+          <div id="volume"></div>
+        </div>
       </div>
     </div>
     <div>
@@ -196,6 +262,10 @@ export default {
       userPlaying: false,
       currentPreview: -1,
       history: [],
+      searchInput: '',
+      searchTimer: null,
+      searchResults: {artists: [], albums: [], tracks: []},
+      showSearch: false,
       historyIndex: -1
     }
   },
@@ -298,6 +368,12 @@ export default {
       'setPlaylist',
       'playlistNext'
     ]),
+    openSearch() {
+      this.showSearch = true;
+    },
+    closeSearch() {
+      this.showSearch = false;
+    },
     randomPlaylist() {
       this.$store.dispatch('Player/loadRandomPlaylist', {api: this.$axios})
           .then(() => {
@@ -431,9 +507,9 @@ export default {
         }
       }
     },
-    setAlbum(id) {
-      localStorage.setItem('album_id', id);
-      this.setCurrentAlbum(id)
+    setAlbum(albumId) {
+      localStorage.setItem('album_id', albumId);
+      this.setCurrentAlbum({albumId, api: this.$axios})
     },
     setArtist(artistId) {
       this.setCurrentArtist(artistId)
@@ -442,6 +518,17 @@ export default {
     }
   },
   watch: {
+    searchInput(v) {
+      if(this.searchTimer) clearTimeout(this.searchTimer);
+      this.searchTimer = setTimeout(() => {
+        this.$axios.get('/search/' + v)
+            .then(({data}) => {
+              this.searchResults.artists = data.artists;
+              this.searchResults.albums = data.albums;
+              this.searchResults.tracks = data.tracks;
+            })
+      }, 500);
+    },
     skin (v) {
       localStorage.setItem('skin', v)
     },
@@ -690,11 +777,20 @@ body {
   color:#fff;
 }
 #bottom-block {
-  position: fixed;
-  bottom:0;
+  position: static;
   width: 100%;
   height:59px;
   border-top:1px solid #999;
+  display: block;
+  z-index: 10;
+  margin-top:-52px;
+}
+#bottom-block > * {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  float:left;
   display: flex;
+  background-color: #fff;
 }
 </style>

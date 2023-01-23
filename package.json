@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "start": "VUE_APP_TEST=1 vue-cli-service serve",
+    "start_": "VUE_APP_BACKEND=https://music.zaek.eu vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

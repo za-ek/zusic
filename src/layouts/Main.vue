@@ -23,7 +23,7 @@
                 v-if="sidebar && sidebarStep > 0"
                 name="corner-up-left"
                 id="back-sidebar"
-                @click.native.prevent="sidebarStep--"
+                @click.native.prevent="(sidebarStep === 4) ? sidebarStep = 0 : sidebarStep--"
         ></v-icon>
         <v-icon
                 v-else
@@ -34,9 +34,10 @@
       </slot>
       <slot name="menu-wrapper">
         <div class="menu-title" v-if="sidebar">
-          <slot v-if="sidebarStep === 0" name="artist-title">{{i18n.t('artists')}}</slot>
+          <slot v-if="sidebarStep === 0" name="search-title"></slot>
+          <slot v-if="sidebarStep === 0" name="artist-title"></slot>
           <slot v-if="sidebarStep === 1" name="albums-title">{{i18n.t('albums')}}</slot>
-          <slot v-if="sidebarStep === 2" name="tracks-title">{{i18n.t('tracks')}}</slot>
+          <slot v-if="sidebarStep === 2 || sidebarStep === 4" name="tracks-title">{{i18n.t('tracks')}}</slot>
         </div>
         <div class="menu-title" v-else>
           <slot name="list-title">{{i18n.t('playlist')}}</slot>
@@ -65,12 +66,19 @@
         <div id="main-layout--left--bottom">
           <div class="main-layout-content">
             <div class="list-title">
-              <slot name="artist-title">
-                {{i18n.t('artists')}}
-              </slot>
+              <slot name="artist-title"></slot>
             </div>
             <div class="list-content">
               <slot name="artist-list"></slot>
+              <div>
+                <div class="list-item list-header"><div class="list-item--title">{{i18n.t('artists')}}</div></div>
+                <slot name="search-artists" @click.stop="sidebarStep = 1"></slot>
+                <div class="list-item list-header"><div class="list-item--title">{{i18n.t('albums')}}</div></div>
+                <div @click.stop="sidebarStep = 4"><slot name="search-albums" @click="searchAlbumSelected"></slot></div>
+                <div class="list-item list-header"><div class="list-item--title">{{i18n.t('tracks')}}</div></div>
+                <slot name="search-tracks"></slot>
+              </div>
+
             </div>
           </div>
         </div>
@@ -79,7 +87,7 @@
         <div
             id="main-layout--center--top"
            :class="{sidebar: sidebar && sidebarStep === 1}"
-            @click="sidebarStep++"
+            @click="sidebarStep = 2"
         >
           <div class="main-layout-content">
             <div class="list-title">
@@ -94,7 +102,7 @@
         </div>
         <div
             id="main-layout--center--bottom"
-            :class="{sidebar: sidebar && sidebarStep === 2}"
+            :class="{sidebar: sidebar && sidebarStep === 2 || sidebarStep === 4}"
         >
           <div class="main-layout-content">
             <div class="list-title">
@@ -155,6 +163,14 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
+    },
+    searchAlbumSelected(e) {
+      console.log(e);
+    }
+  },
+  watch: {
+    sidebarStep(v) {
+      console.log(v);
     }
   }
 }
