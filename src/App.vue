@@ -68,6 +68,10 @@
         <span v-if="currentArtist" @click="clearCurrentArtist">
           - {{currentArtist.title}}
         </span>
+        <div class="group-control">
+          <v-icon @click.native="playArtist" name="play" class="group-control"></v-icon>
+          <v-icon @click.native="addArtist" name="plus" class="group-control"></v-icon>
+        </div>
       </div>
       <div slot="artist-title" v-if="!showSearch">
         {{i18n.t('artists')}}
@@ -77,6 +81,7 @@
         <input type="text" v-model="searchInput">
         <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
         <v-icon name="x" @click.native="closeSearch" class="group-control"></v-icon>
+        <v-icon name="fast-forward" v-if="currentPreview > -1" @click.native="startWithPreview" class="group-control"></v-icon>
       </div>
       <div v-if="showSearch" slot="search-artists">
         <div
@@ -218,7 +223,8 @@
           <v-icon @click.native="playlistNext" name="skip-forward" id="play-line-forward"></v-icon>
         </div>
         <div id="now-time">
-          <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span> /
+          <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span>
+          <div id="now-time-slash"> /</div>
           {{formatTrackTime(currentTrackDuration)}}
         </div>
         <div id="now-playing">
@@ -371,8 +377,25 @@ export default {
     openSearch() {
       this.showSearch = true;
     },
+    playArtist() {
+      this.$axios.get('/artists/' + this.currentArtist.id + '/tracks')
+          .then(({data}) => {
+            this.setPlaylist(data.tracks)
+          })
+    },
+    addArtist() {
+      this.$axios.get('/artists/' + this.currentArtist.id + '/tracks')
+          .then(({data}) => {
+            data.tracks.map(this.addTrackToPlaylist)
+          })
+    },
     closeSearch() {
       this.showSearch = false;
+    },
+    startWithPreview() {
+      this.setPlaylist([
+        Object.assign({}, this.currentTrack)
+      ])
     },
     randomPlaylist() {
       this.$store.dispatch('Player/loadRandomPlaylist', {api: this.$axios})
@@ -744,7 +767,18 @@ body {
 }
 @media (max-width: 768px) {
   #now-playing {
+    white-space: nowrap;
+    font-size: 12px;
+    overflow: hidden;
+  }
+  #now-time-elapsed,
+  #now-time-slash {
     display: none;
+  }
+  #controls-right {
+    position: absolute;
+    right:0;
+    bottom:0;
   }
   #now-time {
     margin:0 auto;
@@ -777,16 +811,17 @@ body {
   color:#fff;
 }
 #bottom-block {
-  position: static;
+  position: fixed;
   width: 100%;
   height:59px;
   border-top:1px solid #999;
   display: block;
   z-index: 10;
-  margin-top:-52px;
+  margin-top:-59px;
 }
 #bottom-block > * {
   width: 100%;
+  height:59px;
   position: relative;
   z-index: 10;
   float:left;
