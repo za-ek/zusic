@@ -224,7 +224,7 @@
         </div>
         <div id="now-time">
           <span id="now-time-elapsed">{{formatTrackTime(currentTrackTime)}}</span>
-          <div id="now-time-slash"> /</div>
+          <span id="now-time-slash"> /</span>
           {{formatTrackTime(currentTrackDuration)}}
         </div>
         <div id="now-playing">
@@ -325,7 +325,7 @@ export default {
     this.commitHistory();
 
     volume.onclick = (e) => {
-      let v = (e.clientX - volume.offsetLeft) / 145
+      let v = (e.clientX - document.getElementById('controls-right').offsetLeft) / 145
       this.$refs.player.volume = v;
       for(let i = 0; i <= MAX; i++) {
         if((i / MAX) < v) {
