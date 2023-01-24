@@ -1,5 +1,10 @@
 <template>
   <div id="app" :class="'skin-' + skin">
+    <div id="loader" v-if="loading">
+      <div>
+        <v-icon name="loader"></v-icon>
+      </div>
+    </div>
     <Layout ref="layout">
       <div slot="menu-line">
         <div id="menu-switchers">
@@ -69,8 +74,8 @@
           - {{currentArtist.title}}
         </span>
         <div class="group-control">
-          <v-icon @click.native="playArtist" name="play" class="group-control"></v-icon>
-          <v-icon @click.native="addArtist" name="plus" class="group-control"></v-icon>
+          <v-icon v-if="currentArtist" @click.native="playArtist" name="play" class="group-control"></v-icon>
+          <v-icon v-if="currentArtist" @click.native="addArtist" name="plus" class="group-control"></v-icon>
         </div>
       </div>
       <div slot="artist-title" v-if="!showSearch">
@@ -272,7 +277,8 @@ export default {
       searchTimer: null,
       searchResults: {artists: [], albums: [], tracks: []},
       showSearch: false,
-      historyIndex: -1
+      historyIndex: -1,
+      loading: false
     }
   },
   computed: {
@@ -378,15 +384,23 @@ export default {
       this.showSearch = true;
     },
     playArtist() {
+      this.loading = true;
       this.$axios.get('/artists/' + this.currentArtist.id + '/tracks')
           .then(({data}) => {
             this.setPlaylist(data.tracks)
           })
+          .finally(() => {
+            this.loading = false;
+          })
     },
     addArtist() {
+      this.loading = true;
       this.$axios.get('/artists/' + this.currentArtist.id + '/tracks')
           .then(({data}) => {
             data.tracks.map(this.addTrackToPlaylist)
+          })
+          .finally(() => {
+            this.loading = false;
           })
     },
     closeSearch() {
@@ -398,10 +412,12 @@ export default {
       ])
     },
     randomPlaylist() {
+      this.loading = true;
       this.$store.dispatch('Player/loadRandomPlaylist', {api: this.$axios})
           .then(() => {
             this.commitHistory()
           })
+          .finally(() => this.loading = false)
     },
     trackToPlaylist (track) {
       this.addTrackToPlaylist(track)
@@ -535,20 +551,28 @@ export default {
       this.setCurrentAlbum({albumId, api: this.$axios})
     },
     setArtist(artistId) {
+      this.loading = true
       this.setCurrentArtist(artistId)
       localStorage.setItem('artist_id', artistId);
       this.$store.dispatch('Player/loadAlbumList', {api: this.$axios, artistId})
+          .finally(() => {
+            this.loading = false
+          })
     }
   },
   watch: {
     searchInput(v) {
       if(this.searchTimer) clearTimeout(this.searchTimer);
       this.searchTimer = setTimeout(() => {
+        this.loading = true;
         this.$axios.get('/search/' + v)
             .then(({data}) => {
               this.searchResults.artists = data.artists;
               this.searchResults.albums = data.albums;
               this.searchResults.tracks = data.tracks;
+            })
+            .finally(() => {
+              this.loading = false;
             })
       }, 500);
     },
@@ -576,6 +600,7 @@ export default {
     },
     currentAlbum (v) {
       if (v) {
+        this.loading = true;
         this.$store.dispatch('Player/loadTrackList', {
           api: this.$axios,
           filter: {
@@ -583,6 +608,7 @@ export default {
             albumId: v && v.id
           }
         })
+            .finally(() => this.loading = false)
       }
     },
     currentTrack (v) {
@@ -827,5 +853,37 @@ body {
   float:left;
   display: flex;
   background-color: #fff;
+}
+#loader {
+  position: absolute;
+  width:100%;
+  height:100%;
+  background-color: rgba(255,255,255,0.4);
+  overflow: hidden;
+}
+#loader > * {
+  max-width:100px;
+  display:flex;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+@-moz-keyframes spin {
+  100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform:rotate(360deg);
+  }
+}
+#loader svg {
+  -webkit-animation:spin 4s linear infinite;
+  -moz-animation:spin 4s linear infinite;
+  animation:spin 4s linear infinite;
 }
 </style>

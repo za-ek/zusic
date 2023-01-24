@@ -5,7 +5,7 @@ export default {
   },
   actions: {
     loadAlbumList ({ commit }, {api, artistId}) {
-      api.get(
+      return api.get(
         artistId
           ? `artists/${artistId}/albums`
           : 'albums'
