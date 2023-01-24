@@ -20,15 +20,10 @@ export default {
       state.albums = list
     },
     setCurrentAlbum (state, {albumId, api}) {
-      const result = state.albums.find(item => item.id === albumId);
-      if(result) {
-        state.currentAlbum =result;
-      } else {
-        api.get('/albums/' + albumId)
-            .then(({data}) => {
-              state.currentAlbum = data.album;
-            });
-      }
+      return api.get('/albums/' + albumId)
+          .then(({data}) => {
+            state.currentAlbum = data.album;
+          });
     },
     clearCurrentAlbum (state) {
       state.currentAlbum = null

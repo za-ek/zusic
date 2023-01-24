@@ -85,7 +85,7 @@
       <div slot="artist-title" v-else>
         <input type="text" v-model="searchInput">
         <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
-        <v-icon name="x" @click.native="closeSearch" class="group-control"></v-icon>
+        <v-icon name="x" @click.native.stop="closeSearch" class="group-control"></v-icon>
         <v-icon name="fast-forward" v-if="currentPreview > -1" @click.native="startWithPreview" class="group-control"></v-icon>
       </div>
       <div v-if="showSearch" slot="search-artists">
@@ -601,14 +601,15 @@ export default {
     currentAlbum (v) {
       if (v) {
         this.loading = true;
-        this.$store.dispatch('Player/loadTrackList', {
+        const promise = this.$store.dispatch('Player/loadTrackList', {
           api: this.$axios,
           filter: {
             artistId: (this.currentArtist && this.currentArtist.id) || this.currentAlbum.artist.id,
-            albumId: v && v.id
+            albumId: v.id
           }
         })
-            .finally(() => this.loading = false)
+        if(promise && promise instanceof Promise) promise.finally(() => this.loading = false)
+        else this.loading = false;
       }
     },
     currentTrack (v) {

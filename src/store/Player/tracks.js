@@ -6,6 +6,7 @@ export default {
     loadTrackList ({ commit }, {api, filter}) {
       filter = filter || {}
       if(('albumId' in filter) && filter.albumId) {
+        console.log("LOAD TRACK LIST")
         return api.get(`albums/${filter.albumId}`)
           .then(d => {
             commit('setTrackList', d.data.tracks)
@@ -15,8 +16,6 @@ export default {
           })
         // @todo
         // commit('setTrackList', list)
-      } else {
-        return Promise.reject();
       }
     }
   },

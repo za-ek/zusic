@@ -102,7 +102,7 @@
         </div>
         <div
             id="main-layout--center--bottom"
-            :class="{sidebar: sidebar && sidebarStep === 2 || sidebarStep === 4}"
+            :class="{sidebar: sidebar && (sidebarStep === 2 || sidebarStep === 4)}"
         >
           <div class="main-layout-content">
             <div class="list-title">
