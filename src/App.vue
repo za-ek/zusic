@@ -388,6 +388,9 @@ export default {
       this.$axios.get('/artists/' + this.currentArtist.id + '/tracks')
           .then(({data}) => {
             this.setPlaylist(data.tracks)
+            this.setPlaylistTrack(0)
+            this.playerPlay()
+            this.userPlaying = true
           })
           .finally(() => {
             this.loading = false;
