@@ -407,7 +407,8 @@ export default {
           })
     },
     closeSearch() {
-      this.showSearch = false;
+      if(this.searchInput) this.searchInput = '';
+      else this.showSearch = false;
     },
     startWithPreview() {
       this.setPlaylist([
