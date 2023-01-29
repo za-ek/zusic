@@ -237,9 +237,9 @@
             {{currentTrackTitle || i18n.t('unknown_track')}}
           </div>
           <div id="now-playing--artist">
-            {{currentTrackArtist || i18n.t('unknown_artist')}}
+            {{currentTrackArtist.title || i18n.t('unknown_artist')}}
             <span v-if="currentTrackAlbum">
-              - {{currentTrackAlbum}}
+              - {{currentTrackAlbum.title}}
             </span>
             <span v-if="currentTrackYear">
               - {{currentTrackYear}}
