@@ -100,9 +100,9 @@ export default {
         }
 
         document.title = [
-          (state.currentTrack.artist) ? state.currentTrack.artist : this._vm.i18n.t('unknown_artist'),
+          (state.currentTrack.artist) ? state.currentTrack.artist.title : this._vm.i18n.t('unknown_artist'),
           state.currentTrack.title,
-          state.currentTrack.album ? state.currentTrack.album : '...'
+          state.currentTrack.album ? state.currentTrack.album.title : '...'
         ].join(' - ')
       }
     },
