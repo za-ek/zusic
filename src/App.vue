@@ -215,6 +215,8 @@
           :key="key"
           :track="item"
           :class="{'list-item': true, 'playlist-item': true, 'current': currentPlaylistKey === key}"
+          :set-album="setAlbum"
+          :set-artist="setArtist"
         />
       </div>
     </Layout>
@@ -237,9 +239,9 @@
             {{currentTrackTitle || i18n.t('unknown_track')}}
           </div>
           <div id="now-playing--artist">
-            {{currentTrackArtist.title || i18n.t('unknown_artist')}}
+            <a href="#" @click="setArtist(currentTrackArtist.id)">{{currentTrackArtist.title || i18n.t('unknown_artist')}}</a>
             <span v-if="currentTrackAlbum">
-              - {{currentTrackAlbum.title}}
+              - <a href="#" @click="setAlbum(currentTrackAlbum.id)">{{currentTrackAlbum.title}}</a>
             </span>
             <span v-if="currentTrackYear">
               - {{currentTrackYear}}
@@ -674,6 +676,9 @@ body {
 #now-playing--artist {
   height:1em;
   overflow: hidden;
+}
+#now-playing--artist a {
+  color:#666;
 }
 
 #controls {

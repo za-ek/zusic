@@ -3,7 +3,11 @@
     <div class="list-item--pre" v-if="isCurrent" v-order-btn>&#9724;</div>
     <div class="list-item--pre" v-else v-order-btn>&#9723;</div>
     <div class="list-item--title">{{track.title}}</div>
-    <div class="list-item--info">{{(track.album) ? track.album.title : ''}} - {{(track.artist) ? track.artist.title : ''}}</div>
+    <div class="list-item--info">
+      <a href="#" @click="setAlbum(track.album.id)">{{(track.album) ? track.album.title : ''}}</a>
+      &nbsp;-&nbsp;
+      <a href="#" @click="setArtist(track.artist.id)">{{(track.artist) ? track.artist.title : ''}}</a>
+    </div>
     <div class="list-item--sub-info">{{formatTrackTime(track.duration)}}</div>
     <div class="list-item--controls">
       <v-icon
@@ -17,7 +21,7 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  props: ['track', 'index'],
+  props: ['track', 'index', 'setAlbum', 'setArtist'],
   computed: {
     ...mapState({
       currentPlaylistKey: state => state.Player.Playlist.currentTrackN
