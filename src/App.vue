@@ -239,7 +239,7 @@
             {{currentTrackTitle || i18n.t('unknown_track')}}
           </div>
           <div id="now-playing--artist">
-            <a href="#" @click="setArtist(currentTrackArtist.id)">{{currentTrackArtist.title || i18n.t('unknown_artist')}}</a>
+            <a v-if="currentTrackArtist" href="#" @click="setArtist(currentTrackArtist.id)">{{currentTrackArtist.title || i18n.t('unknown_artist')}}</a>
             <span v-if="currentTrackAlbum">
               - <a href="#" @click="setAlbum(currentTrackAlbum.id)">{{currentTrackAlbum.title}}</a>
             </span>
