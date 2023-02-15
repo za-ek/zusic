@@ -1,6 +1,7 @@
 export default {
   state: {
     artists: [],
+    playlists: [],
     recent: [],
     currentArtist: null
   },
@@ -16,6 +17,7 @@ export default {
     setArtistList (state, list) {
       state.artists = list.artists
       state.recent = list.recent
+      state.playlists = list.playlists
     },
     setCurrentArtist (state, artistId) {
       state.currentArtist = state.artists.find(item => item.id === String(artistId))

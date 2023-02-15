@@ -13,7 +13,13 @@ export default {
         .then(d => {
           commit('setAlbumList', d.data.albums)
         })
-    }
+    },
+    loadPlaylists ({ commit }, {api, title}) {
+      return api.get(`playlists/${title}`)
+        .then(d => {
+          commit('setAlbumList', d.data.playlists)
+        })
+    },
   },
   mutations: {
     setAlbumList (state, list) {
@@ -21,6 +27,12 @@ export default {
     },
     setCurrentAlbum (state, {albumId, api}) {
       return api.get('/albums/' + albumId)
+          .then(({data}) => {
+            state.currentAlbum = data.album;
+          });
+    },
+    setCurrentPlaylist(state, {playlistId, api}) {
+      return api.get('/playlists/' + playlistId)
           .then(({data}) => {
             state.currentAlbum = data.album;
           });

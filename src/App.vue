@@ -39,6 +39,19 @@
         </div>
       </div>
       <div slot="artist-list" v-if="!showSearch">
+        <div class="list-item list-header"><div class="list-item--title">{{i18n.t('playlists')}}</div></div>
+        <div
+            v-for="(artist) in playlists"
+            :key="'recent-'+artist.id"
+            class="list-item"
+            @click="setUserPlaylists(artist.title)"
+        >
+          <div class="list-item--title">{{artist.title || i18n.t('unknown_playlist')}}</div>
+          <div class="list-item--sub-info">{{artist.track_count}}</div>
+          <div class="list-item--controls">
+            <v-icon name="list"></v-icon>
+          </div>
+        </div>
         <div class="list-item list-header"><div class="list-item--title">{{i18n.t('recent_artists')}}</div></div>
         <div
             v-for="(artist) in artists.filter(a => artists_recent.indexOf(a.id) > -1)"
@@ -148,7 +161,7 @@
                 v-for="(album) in albums"
                 :key="album.id"
                 class="list-item"
-                @click="setAlbum(album.id)"
+                @click="'type' in album && album.type == 'playlist' ? setUserPlaylist(album.id) : setAlbum(album.id)"
         >
           <div class="list-item--title">{{album.title || i18n.t('unknown_album')}}</div>
           <div class="list-item--info">
@@ -206,6 +219,7 @@
         <span :title="i18n.t('random_playlist')"><v-icon name="box" @click.native="randomPlaylist" class="group-control"></v-icon></span>
         <span :title="i18n.t('redo')"><v-icon name="corner-right-down" @click.native="redoPlaylist" class="group-control"></v-icon></span>
         <span :title="i18n.t('undo')"><v-icon name="corner-left-down" @click.native="undoPlaylist" class="group-control"></v-icon></span>
+        <span :title="i18n.t('save')"><v-icon name="save" @click.native="savePlaylist" class="group-control"></v-icon></span>
       </div>
       <div slot="playlist">
         <PlaylistTrack
@@ -292,6 +306,7 @@ export default {
       currentPlaylistKey: state => state.Player.Playlist.currentTrackN,
       genres: state => state.Player.Genres.genres,
       artists: state => state.Player.Artists.artists,
+      playlists: state => state.Player.Artists.playlists,
       artists_recent: state => state.Player.Artists.recent,
       albums: state => state.Player.Albums.albums,
       tracks: state => state.Player.Tracks.tracks,
@@ -372,6 +387,7 @@ export default {
       'setCurrentArtist',
       'clearCurrentArtist',
       'setCurrentAlbum',
+      'setCurrentPlaylist',
       'clearCurrentAlbum',
       'removeTrackFromPlaylist',
       'setRawTrack',
@@ -448,6 +464,20 @@ export default {
       if(this.historyIndex <= 0) return;
       --this.historyIndex;
       this.setPlaylist(this.history[this.historyIndex])
+    },
+    savePlaylist() {
+      const name = prompt(this.i18n.t('playlist_prompt'))
+      if(name && name.indexOf(':') > 0 && name.indexOf('id_') !== name.indexOf(':') + 1) {
+        this.loading = true
+        const sendParams = {
+          name: name,
+          list: this.playlist.map(i => i.id)
+        };
+        this.$axios.post('playlists', sendParams).finally(() => {this.loading = false});
+      }
+      // if(this.historyIndex <= 0) return;
+      // --this.historyIndex;
+      // this.setPlaylist(this.history[this.historyIndex])
     },
     redoPlaylist() {
       if(this.historyIndex >= this.history.length - 1) return;
@@ -554,7 +584,23 @@ export default {
     },
     setAlbum(albumId) {
       localStorage.setItem('album_id', albumId);
-      this.setCurrentAlbum({albumId, api: this.$axios})
+      this.setCurrentAlbum({albumId, api: this.$axios});
+    },
+    setUserPlaylists(title) {
+      this.loading = true
+      this.$store.dispatch('Player/loadPlaylists', {api: this.$axios, title})
+          .finally(() => {
+            this.loading = false
+          })
+    },
+    setUserPlaylist(id) {
+      this.loading = true
+      // this.$store.dispatch('Player/loadUserPlaylist', {api: this.$axios, id})
+      this.$axios.get('/playlists/id_' + id)
+          .then(d => {
+            this.$store.commit('Player/setTrackList', d.data.tracks);
+            this.loading = false
+          })
     },
     setArtist(artistId) {
       this.loading = true

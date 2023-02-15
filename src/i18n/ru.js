@@ -4,9 +4,11 @@ export default {
   albums: 'Альбомы',
   tracks: 'Треки',
   playlist: 'Плейлист',
+  playlists: 'Плейлисты',
   unknown_artist: 'Неизвестный исполнитель',
   unknown_album: 'Неизвестный альбом',
   unknown_track: 'Неизвестный трек',
+  unknown_playlist: 'Неизвестный плейлист',
 
   clear: 'Очистить',
   order_number: 'Отсортировать',
@@ -16,6 +18,7 @@ export default {
 
   browser_no_support: 'Данный браузер не поддерживает audio HTML',
 
+  playlist_prompt: 'Название плейлиста (username:playlist_name)',
   random_playlist: 'Сгенерировать плейлист',
   all_apologies: 'Простите, это пока не работает',
 

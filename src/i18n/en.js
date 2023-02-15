@@ -4,9 +4,11 @@ export default {
   albums: 'Albums',
   tracks: 'Tracks',
   playlist: 'Playlist',
+  playlists: 'Playlists',
   unknown_artist: 'Unknown artist',
   unknown_album: 'Unknown album',
   unknown_track: 'Unknown track',
+  unknown_playlist: 'Unknown playlist',
 
   clear: 'Clear',
   order_number: 'Sort',
@@ -24,6 +26,7 @@ export default {
   es: 'Spanish',
   ru: 'Russian',
 
+  playlist_prompt: 'Playlist name (username:playlist_name)',
   random_playlist: 'Random playlist',
   all_apologies: 'All apologies this is doesn\'t work',
 
