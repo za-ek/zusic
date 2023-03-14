@@ -40,6 +40,10 @@ Vue.directive('order-btn', {
             e.target.classList.add('drag-item-next')
           } else if (e.target.parentNode.className.split(' ').indexOf('playlist-item') > -1) {
             e.target.parentNode.classList.add('drag-item-next')
+          } else if ((e.target.className.split(' ').indexOf('playlist-name') > -1)) {
+            e.target.classList.add('drag-item-next')
+          } else if (e.target.parentNode.className.split(' ').indexOf('playlist-name') > -1) {
+            e.target.parentNode.classList.add('drag-item-next')
           }
         }
       },
@@ -53,10 +57,18 @@ Vue.directive('order-btn', {
 
         let items = document.getElementsByClassName('drag-item-next')
         if (items.length > 0) {
-          let n = Array.prototype.slice.call(el.parentNode.parentNode.children).indexOf(el.parentNode)
-          let m = Array.prototype.slice.call(items[0].parentNode.children).indexOf(items[0])
+          // album
+          if(items[0].classList.contains('playlist-name')) {
+            const track_id = el.attributes.getNamedItem("data-id").value;
+            const playlist_name = items[0].attributes.getNamedItem('data-name').value;
+            Vue.prototype.$eventHub.$emit('add-to-playlist', {track_id, playlist_name})
+          } else {
+            // list
+            let n = Array.prototype.slice.call(el.parentNode.parentNode.children).indexOf(el.parentNode)
+            let m = Array.prototype.slice.call(items[0].parentNode.children).indexOf(items[0])
+            Vue.prototype.$eventHub.$emit('playlist-move', {n, m})
+          }
           items[0].classList.remove('drag-item-next')
-          Vue.prototype.$eventHub.$emit('playlist-move', {n, m})
         }
       },
       dragStart = () => {

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="list-item--pre" v-if="isCurrent" v-order-btn>&#9724;</div>
-    <div class="list-item--pre" v-else v-order-btn>&#9723;</div>
+    <div :data-id="track.id" class="list-item--pre" v-if="isCurrent" v-order-btn>&#9724;</div>
+    <div :data-id="track.id" class="list-item--pre" v-else v-order-btn>&#9723;</div>
     <div class="list-item--title">{{track.title}}</div>
     <div class="list-item--info">
       <a href="#" @click="setAlbum(track.album.id)">{{(track.album) ? track.album.title : ''}}</a>

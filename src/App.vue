@@ -96,7 +96,7 @@
         <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
       </div>
       <div slot="artist-title" v-else>
-        <input type="text" v-model="searchInput">
+        <input type="text" v-model="searchInput" ref="searchInput">
         <v-icon name="search" @click.native="openSearch" class="group-control"></v-icon>
         <v-icon name="x" @click.native.stop="closeSearch" class="group-control"></v-icon>
         <v-icon name="fast-forward" v-if="currentPreview > -1" @click.native="startWithPreview" class="group-control"></v-icon>
@@ -156,12 +156,13 @@
           </div>
         </div>
       </div>
-      <div slot="albums-list">
+      <div slot="albums-list" :class="{'playlists': true}">
         <div
                 v-for="(album) in albums"
                 :key="album.id"
-                class="list-item"
-                @click="'type' in album && album.type == 'playlist' ? setUserPlaylist(album.id) : setAlbum(album.id)"
+                :class='{"list-item":true,  "playlist-name": album.type === "playlist"}'
+                :data-name="album.artist.title + ':' + album.title"
+                @click="'type' in album && album.type === 'playlist' ? setUserPlaylist(album.id) : setAlbum(album.id)"
         >
           <div class="list-item--title">{{album.title || i18n.t('unknown_album')}}</div>
           <div class="list-item--info">
@@ -332,6 +333,7 @@ export default {
   },
   created () {
     this.skin = localStorage.getItem('skin') || 'purple'
+    this.$eventHub.$on('add-to-playlist', this.addToUserPlaylist)
     this.$eventHub.$on('playlist-move', this.playlistMove)
     this.$eventHub.$on('network-error', this.networkError)
     this.$eventHub.$on('network-success', () => { this.online = true })
@@ -400,6 +402,17 @@ export default {
     ]),
     openSearch() {
       this.showSearch = true;
+      setTimeout(() => {
+        this.$refs.searchInput.focus();
+      }, 0);
+    },
+    addToUserPlaylist({track_id, playlist_name}) {
+      this.loading = true
+      const sendParams = {
+        name: playlist_name,
+        id: track_id
+      };
+      this.$axios.post('/playlists/add', sendParams).finally(() => {this.loading = false});
     },
     playArtist() {
       this.loading = true;

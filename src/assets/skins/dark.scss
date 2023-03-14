@@ -102,5 +102,16 @@ $control: #8a12ff;
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr=$color,GradientType=0 ); /* IE6-9 */
       }
     }
+    .playlists {
+      .list-item {
+        &.drag-item-next {
+          background: $color;
+          filter:none;
+          .list-item--title {
+            color: #fff !important;
+          }
+        }
+      }
+    }
   }
 }
