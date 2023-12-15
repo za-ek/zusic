@@ -679,8 +679,10 @@ export default {
     },
     currentTrack (v) {
       this.playerSetTrack(v)
-      if(this.userPlaying) {
+      try {
         this.playerPlay()
+      } catch (e) {
+        console.log(e)
       }
       localStorage.setItem('currentTrack', JSON.stringify(v))
     },

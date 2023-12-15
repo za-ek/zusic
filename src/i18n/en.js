@@ -15,6 +15,7 @@ export default {
   shuffle: 'Shuffle',
   undo: 'Undo',
   redo: 'Redo',
+  save: 'Save',
 
   skin_green: 'Green',
   skin_purple: 'Purple',
