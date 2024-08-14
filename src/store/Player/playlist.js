@@ -9,7 +9,13 @@ export default {
     loadPlaylist ({ commit }) {
     },
     loadRandomPlaylist ({ commit }, {api}) {
-      return api.get('tracks/random')
+      return api.get('tracks/random', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
         .then(d => {
           commit('setPlaylist', d.data.tracks)
         })
