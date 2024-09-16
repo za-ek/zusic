@@ -9,7 +9,7 @@ export default {
     loadPlaylist ({ commit }) {
     },
     loadRandomPlaylist ({ commit }, {api}) {
-      return api.get('tracks/random', {
+      return api.get('tracks/random?r=' + Date.now(), {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
