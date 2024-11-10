@@ -337,6 +337,10 @@ export default {
     this.$eventHub.$on('playlist-move', this.playlistMove)
     this.$eventHub.$on('network-error', this.networkError)
     this.$eventHub.$on('network-success', () => { this.online = true })
+
+    window.addEventListener('online', this.updateNetworkStatus)
+    window.addEventListener('offline', this.updateNetworkStatus)
+
     this.restoreState()
     try {
       this.playerPause()
@@ -400,6 +404,11 @@ export default {
       'setPlaylist',
       'playlistNext'
     ]),
+
+    updateNetworkStatus() {
+    this.online = navigator.onLine;
+  },
+  
     openSearch() {
       this.showSearch = true;
       setTimeout(() => {
